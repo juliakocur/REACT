@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    background-image: linear-gradient(to bottom left, #120b2e 20%, #2d0c3b 55%, #683468);
+    width: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+input {
+    outline: none;
+    font-size: 1.3rem;
+    color: white;
+}
