@@ -5,7 +5,9 @@
 }
 
 #root {
-    background-image: linear-gradient(to bottom left, #120b2e 20%, #2d0c3b 55%, #683468);
+    background-image: url('./assets/planets.jpg');
+    background-size: cover;
+    background-position: center;
     width: 100%;
     min-height: 100vh;
     margin: 0 auto;
@@ -15,4 +17,15 @@ input {
     outline: none;
     font-size: 1.3rem;
     color: white;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: white;
+    border-radius: 9em;
 }
