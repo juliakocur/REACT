@@ -1,14 +1,18 @@
 import React from 'react';
 import './Cards.css';
+import { IShips as StarShips } from '../Types/index';
 
-class Cards extends React.Component {
+class Cards extends React.Component<StarShips> {
+  constructor(props: StarShips) {
+    super(props);
+  }
   render() {
     return (
       <div className="cards">
-        <h4>Ship name</h4>
-        <p>Ship description 1</p>
-        <p>Ship description 2</p>
-        <p>Ship description 3</p>
+        <h4>{this.props.name}</h4>
+        <p>Manufacturer: {this.props.manufacturer}</p>
+        <p>Passengers: {this.props.passengers}</p>
+        <p>Length: {this.props.length} m</p>
       </div>
     );
   }

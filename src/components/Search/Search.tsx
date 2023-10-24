@@ -21,14 +21,17 @@ class Search extends React.Component {
     return (
       <div className="search">
         <img src={logo} className="logo" alt="logo"></img>
-        <input
-          className="search__field"
-          type="text"
-          placeholder="search ..."
-          value={this.state.value}
-          onInput={this.handleChange}
-        />
-        <img src={search} className="search__icon" alt="icon"></img>
+        <form className="search__form">
+          <input
+            className="search__field"
+            type="text"
+            placeholder="search ..."
+            value={this.state.value}
+            onInput={this.handleChange}
+          />
+          <input type="submit" value="" className="search__button" />
+          <img src={search} className="search__icon" alt="icon"></img>
+        </form>
       </div>
     );
   }
