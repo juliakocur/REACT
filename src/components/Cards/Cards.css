@@ -1,6 +1,6 @@
 .cards {
     width: 300px;
-    height: 135px;
+    height: 170px;
     background-color: rgba(255, 255, 255, 0.4);
     border: solid 2px white;
     border-radius: 5px;
@@ -10,14 +10,13 @@
 }
 
 .cards__header {
-    margin-bottom: 10px;
     font-weight: 700;
     text-decoration: underline;
+    margin-bottom: 5px;
 }
 
 .cards__description {
     font-weight: 700;
-    margin-bottom: 5px;
 }
 
 span {

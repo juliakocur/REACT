@@ -3,6 +3,8 @@ export interface IShips {
   manufacturer: string;
   passengers: number;
   length: number;
+  model: string;
+  starship_class: string;
 }
 
 export interface ICard {
@@ -10,4 +12,6 @@ export interface ICard {
   manufacturer: string;
   passengers: number;
   length: number;
+  model: string;
+  starship_class: string;
 }

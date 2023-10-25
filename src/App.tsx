@@ -42,6 +42,8 @@ class App extends React.Component {
         manufacturer={el.manufacturer}
         passengers={el.passengers}
         length={el.length}
+        model={el.model}
+        starship_class={el.starship_class}
       />
     ));
 

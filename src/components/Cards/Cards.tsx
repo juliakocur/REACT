@@ -14,6 +14,12 @@ class Cards extends React.Component<StarShips> {
           Manufacturer: <span>{this.props.manufacturer}</span>
         </p>
         <p className="cards__description">
+          Model: <span>{this.props.model}</span>
+        </p>
+        <p className="cards__description">
+          Class: <span>{this.props.starship_class}</span>
+        </p>
+        <p className="cards__description">
           Passengers: <span>{this.props.passengers}</span>
         </p>
         <p className="cards__description">
