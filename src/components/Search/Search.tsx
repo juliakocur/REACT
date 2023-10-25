@@ -1,6 +1,7 @@
 import React from 'react';
 import search from '../../assets/search.svg';
 import logo from '../../assets/logo.png';
+import ErrorButton from '../ErrorButton/ErrorButton';
 import './Search.css';
 
 class Search extends React.Component {
@@ -32,6 +33,7 @@ class Search extends React.Component {
           <input type="submit" value="" className="search__button" />
           <img src={search} className="search__icon" alt="icon"></img>
         </form>
+        <ErrorButton />
       </div>
     );
   }

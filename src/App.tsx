@@ -18,6 +18,7 @@ class App extends React.Component {
       headers: request,
     });
     const data = await res.json();
+    console.log(data);
     this.array = data.results;
     console.log(this.array);
     this.setState({});

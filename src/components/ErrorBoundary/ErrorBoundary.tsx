@@ -15,7 +15,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error) {
-    console.error('Ага попалась:', error);
+    console.error('Catched error: ', error);
     return { hasError: true };
   }
 
@@ -25,9 +25,10 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <h1>Oops... Something went wrong.</h1>;
+      return <h3 style={{ color: 'red', padding: '30px 50px' }}>Oops... Something went wrong.</h3>;
     }
     return this.props.children;
   }
 }
+
 export default ErrorBoundary;
