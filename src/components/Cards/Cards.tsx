@@ -9,10 +9,16 @@ class Cards extends React.Component<StarShips> {
   render() {
     return (
       <div className="cards">
-        <h4>{this.props.name}</h4>
-        <p>Manufacturer: {this.props.manufacturer}</p>
-        <p>Passengers: {this.props.passengers}</p>
-        <p>Length: {this.props.length} m</p>
+        <h3 className="cards__header">{this.props.name}</h3>
+        <p className="cards__description">
+          Manufacturer: <span>{this.props.manufacturer}</span>
+        </p>
+        <p className="cards__description">
+          Passengers: <span>{this.props.passengers}</span>
+        </p>
+        <p className="cards__description">
+          Length: <span>{this.props.length} m</span>
+        </p>
       </div>
     );
   }

@@ -52,8 +52,12 @@ class App extends React.Component {
           <div className="loader__container">
             <Loader />
           </div>
-        ) : (
+        ) : this.array.length > 0 ? (
           <div className="cards__container">{shipItems}</div>
+        ) : (
+          <h3 style={{ textAlign: 'center', color: 'white' }}>
+            No results found. Please try again with another search term.
+          </h3>
         )}
       </>
     );

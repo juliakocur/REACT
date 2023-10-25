@@ -1,12 +1,27 @@
 .cards {
     width: 300px;
-    height: 150px;
+    height: 135px;
     background-color: rgba(255, 255, 255, 0.4);
     border: solid 2px white;
     border-radius: 5px;
     margin: 20px;
     padding: 10px;
-    font-size: 24px;
+    font-size: 16px;
+}
+
+.cards__header {
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.cards__description {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+span {
+    font-weight: 400;
 }
 
 @media (max-width: 820px) {
