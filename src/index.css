@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    overflow: hidden;
+}
+
 #root {
     background-image: url('./assets/planets.jpg');
     background-size: cover;
