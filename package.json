@@ -12,7 +12,8 @@
     "prettier:fix": "prettier --write src",
     "preview": "vite preview",
     "test": "test --watchAll=false",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -46,5 +47,11 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vitest": "^0.34.6"
-  }
+  },
+  "lint-staged": {  
+  "*.{ts,tsx}": [ 
+      "npm run lint:fix", 
+      "npm run prettier:fix"
+  ] 
+ } 
 }
