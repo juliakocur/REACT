@@ -7,11 +7,10 @@ export interface IShips {
   starship_class: string;
 }
 
-export interface ICard {
-  name: string;
-  manufacturer: string;
-  passengers: number;
-  length: number;
-  model: string;
-  starship_class: string;
+export interface IProps {
+  children: React.ReactNode;
+}
+
+export interface IState {
+  hasError: boolean;
 }

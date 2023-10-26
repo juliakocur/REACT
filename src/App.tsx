@@ -3,7 +3,7 @@ import Search from './components/Search/Search';
 import Cards from './components/Cards/Cards';
 import Loader from './components/Loader/Loader';
 
-import { ICard as ShipsCard } from './components/Types/index';
+import { IShips as ShipsCard } from './components/Types/index';
 import './App.css';
 
 class App extends React.Component {
