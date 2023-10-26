@@ -1,4 +1,3 @@
 {
-  "*.+(js|mjs|cjs|jsx|mjsx|ts|mts|cts|tsx|mtsx)": ["npm run prettier:fix", "npm run lint:fix"],
-  "*.+(css|pcss)": ["npm run lint:style:fix"]
+  "*.+(js|mjs|cjs|jsx|mjsx|ts|mts|cts|tsx|mtsx)": ["npm run prettier:fix", "npm run lint:fix"]
 }
