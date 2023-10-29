@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import NoResultText from '../NoResultText/NoResultText';
