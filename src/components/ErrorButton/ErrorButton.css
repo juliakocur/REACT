@@ -1,0 +1,25 @@
+.crash__button {
+  min-height: 40px;
+  min-width: 5%;
+  position: absolute;
+  right: 2%;
+  padding: 5px;
+  background: linear-gradient(to right top, white, rgb(78, 77, 77));
+  box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.2);
+  border: solid 2px black;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+}
+
+.crash__button:hover {
+  color: red;
+}
+
+@media (max-width: 900px) {
+  .crash__button {
+    min-height: 30px;
+    top: 12px;
+  }
+}
