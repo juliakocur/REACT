@@ -14,3 +14,9 @@ export interface IProps {
 export interface IState {
   hasError: boolean;
 }
+
+export type IPagination = {
+  currentPage: number;
+  pageCount: number;
+  setCurrentPage: (page: number) => void;
+};
