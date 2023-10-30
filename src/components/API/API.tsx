@@ -17,9 +17,12 @@ const API = () => {
     async function createCardApi() {
       setVal(true);
       const URL: string = 'https://swapi.dev/api/starships';
+      const urlHasLS: string = `${URL}/?search=${localStorage.getItem(
+        'Value'
+      )}&page=${currentPage}`;
       const urlPage: string = `${URL}/?page=${currentPage}`;
       const valueLS = localStorage.getItem('Value') ?? '';
-      const url = valueLS.length > 0 ? `${URL}?search=${valueLS}` : urlPage;
+      const url = valueLS.length > 0 ? urlHasLS : urlPage;
       const request = new Headers();
       const res = await fetch(url, {
         method: 'GET',
@@ -29,7 +32,6 @@ const API = () => {
       console.log(data);
       setArray(data.results);
       setCurrentItems(Math.ceil(data.count / 10));
-      console.log(array);
       setVal(false);
     }
     createCardApi();
