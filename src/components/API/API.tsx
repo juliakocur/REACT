@@ -15,13 +15,10 @@ export const API = () => {
   const [currentItems, setCurrentItems] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const context = React.useContext(Context);
-  console.log(context?.open);
 
   useEffect(() => {
     async function createCardApi() {
-      console.log('I render');
       setVal(true);
-      console.log(context);
       const URL: string = 'https://swapi.dev/api/starships';
       const urlHasLS: string = `${URL}/?search=${localStorage.getItem(
         'Value'
