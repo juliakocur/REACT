@@ -5,6 +5,7 @@ export interface IShips {
   length: number;
   model: string;
   starship_class: string;
+  onClick?: () => void;
 }
 
 export interface IProps {

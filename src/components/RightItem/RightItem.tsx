@@ -1,9 +1,9 @@
-import './Cards.css';
 import { IShips as StarShips } from '../Types/index';
+import './RightItem.css';
 
-const Cards = (props: StarShips) => {
+const RightItem = (props: StarShips) => {
   return (
-    <div className="cards" onClick={props.onClick}>
+    <div className="modal">
       <h3 className="cards__header">{props.name}</h3>
       <p className="cards__description">
         Manufacturer: <span>{props.manufacturer}</span>
@@ -24,4 +24,4 @@ const Cards = (props: StarShips) => {
   );
 };
 
-export default Cards;
+export default RightItem;

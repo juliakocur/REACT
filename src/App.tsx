@@ -1,23 +1,48 @@
-import API from './components/API/API';
+import { API } from './components/API/API';
 import Search from './components/Search/Search';
-import { Routes, Route } from 'react-router-dom';
-import { BrowserRouter } from 'react-router-dom';
+import Modal from './components/Modal/Modal';
+import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
+import { createContext } from 'react';
+import { useState } from 'react';
+import './App.css';
 
-const App = () => {
+type MyContext = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const Context = createContext<null | MyContext>(null);
+
+export const App = () => {
+  const [open, setOpen] = useState(false);
+
+  const Layout = () => {
+    return (
+      <>
+        <main>
+          <Context.Provider value={{ open, setOpen }}>
+            <Search />
+            <div className="main__container">
+              <API />
+              <Outlet />
+            </div>
+          </Context.Provider>
+        </main>
+      </>
+    );
+  };
+
   return (
     <>
-      <header>
-        <Search />
-      </header>
       <main>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<API />} />
+            <Route path="/" element={<Layout />}>
+              <Route path="/" element={<Modal />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </main>
     </>
   );
 };
-
-export default App;

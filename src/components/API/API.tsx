@@ -1,21 +1,27 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
 import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
-
+import { Context } from '../../App';
 import { IShips as ShipsCard } from '../Types/index';
 import './API.css';
+export const clickName: [] = [];
 
-const API = () => {
+export const API = () => {
   const [array, setArray] = useState<ShipsCard[]>([]);
   const [val, setVal] = useState(false);
   const [currentItems, setCurrentItems] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const context = React.useContext(Context);
+  console.log(context?.open);
 
   useEffect(() => {
     async function createCardApi() {
+      console.log('I render');
       setVal(true);
+      console.log(context);
       const URL: string = 'https://swapi.dev/api/starships';
       const urlHasLS: string = `${URL}/?search=${localStorage.getItem(
         'Value'
@@ -29,13 +35,16 @@ const API = () => {
         headers: request,
       });
       const data = await res.json();
-      console.log(data);
       setArray(data.results);
       setCurrentItems(Math.ceil(data.count / 10));
       setVal(false);
     }
     createCardApi();
   }, [currentPage]);
+
+  const cardClick = (name: string) => {
+    localStorage.setItem('Card', name);
+  };
 
   const shipItems = array.map((el, i) => (
     <Cards
@@ -46,6 +55,10 @@ const API = () => {
       length={el.length}
       model={el.model}
       starship_class={el.starship_class}
+      onClick={() => {
+        cardClick(el.name);
+        context?.setOpen(true);
+      }}
     />
   ));
 
@@ -70,5 +83,3 @@ const API = () => {
     </>
   );
 };
-
-export default API;
