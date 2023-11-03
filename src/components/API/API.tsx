@@ -6,6 +6,7 @@ import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
 import { Context } from '../../App';
 import { IShips as ShipsCard } from '../Types/index';
+import { Link } from 'react-router-dom';
 import './API.css';
 export const clickName: [] = [];
 
@@ -38,7 +39,6 @@ export const API = () => {
       } else {
         setArray(data.results);
       }
-      console.log(array);
       setCurrentItems(Math.ceil(data.count / 10));
       setVal(false);
     }
@@ -52,8 +52,8 @@ export const API = () => {
   async function createCardApi() {
     setVal(true);
     const URL: string = 'https://swapi.dev/api/starships';
-    const urlHasLS: string = `${URL}/?search=${localStorage.getItem('Value')}&page=${currentPage}`;
-    const urlPage: string = `${URL}/?page=${currentPage}`;
+    const urlHasLS: string = `${URL}/?search=${localStorage.getItem('Value')}&page=1`;
+    const urlPage: string = `${URL}/?page=1`;
     const valueLS = localStorage.getItem('Value') ?? '';
     const url = valueLS.length > 0 ? urlHasLS : urlPage;
     const request = new Headers();
@@ -67,7 +67,6 @@ export const API = () => {
     } else {
       setArray(data.results);
     }
-    console.log(array);
     setCurrentItems(Math.ceil(data.count / 10));
     setVal(false);
   }
@@ -90,6 +89,7 @@ export const API = () => {
 
   const changeItemsNumber = () => {
     pageItems ? setPageItems(false) : setPageItems(true);
+    setCurrentPage(1);
     createCardApi();
   };
 
@@ -103,20 +103,24 @@ export const API = () => {
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Change the number of items: </span>
-            <button
-              className={pageItems ? 'select active' : 'select'}
-              onClick={changeItemsNumber}
-              disabled={pageItems ? true : false}
-            >
-              10
-            </button>
-            <button
-              className={pageItems ? 'select' : 'select active'}
-              onClick={changeItemsNumber}
-              disabled={pageItems ? false : true}
-            >
-              5
-            </button>
+            <Link to={`/?page=1`}>
+              <button
+                className={pageItems ? 'select active' : 'select'}
+                onClick={changeItemsNumber}
+                disabled={pageItems ? true : false}
+              >
+                10
+              </button>
+            </Link>
+            <Link to={`/?page=1`}>
+              <button
+                className={pageItems ? 'select' : 'select active'}
+                onClick={changeItemsNumber}
+                disabled={pageItems ? false : true}
+              >
+                5
+              </button>
+            </Link>
           </div>
           <div className="cards__container">{shipItems}</div>
           <Pagination
