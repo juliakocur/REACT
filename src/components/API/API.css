@@ -14,3 +14,28 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+.select {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.active {
+  background-color: grey;
+}
+
+.page__items {
+  position: absolute;
+  min-width: 300px;
+  left: 50%;
+  top: 18vh;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 900px) {
+  .page__items {
+    top: 15vh;
+  }
+}
