@@ -102,7 +102,7 @@ export const API = () => {
       ) : array.length > 0 ? (
         <div className="cards__list">
           <div className="page__items">
-            <span className="page__items__text">Change the number of items: </span>
+            <span className="page__items__text">Count of items: </span>
             <Link to={`/?page=1`}>
               <button
                 className={pageItems ? 'select active' : 'select'}
