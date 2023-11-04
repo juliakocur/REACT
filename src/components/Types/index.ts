@@ -1,4 +1,5 @@
 export interface IShips {
+  page?: number;
   name: string;
   manufacturer: string;
   passengers: number;

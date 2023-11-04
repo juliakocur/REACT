@@ -17,6 +17,7 @@ const Modal = () => {
 
   const closeModal = () => {
     context?.setOpen(false);
+    history.pushState(null, 'Title', '/?page=1');
   };
 
   const ref = useOutsideClick(() => {

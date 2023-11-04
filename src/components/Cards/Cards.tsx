@@ -1,10 +1,10 @@
 import './Cards.css';
 import { IShips as StarShips } from '../Types/index';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Cards = (props: StarShips) => {
   return (
-    <Link to={`/?page=1`} className="link">
+    <NavLink to={`/?page=${props.page}&search=${props.name}`}>
       <div className="cards" onClick={props.onClick}>
         <h3 className="cards__header">{props.name}</h3>
         <p className="cards__description">
@@ -23,7 +23,7 @@ const Cards = (props: StarShips) => {
           Length: <span>{props.length} m</span>
         </p>
       </div>
-    </Link>
+    </NavLink>
   );
 };
 

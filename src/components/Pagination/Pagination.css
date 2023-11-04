@@ -23,6 +23,6 @@
   cursor: pointer;
 }
 
-.active {
+.active__num {
   background: grey;
 }

@@ -74,6 +74,7 @@ export const API = () => {
   const shipItems = array.map((el, i) => (
     <Cards
       key={i}
+      page={currentPage}
       name={el.name}
       manufacturer={el.manufacturer}
       passengers={el.passengers}
@@ -105,7 +106,7 @@ export const API = () => {
             <span className="page__items__text">Count of items: </span>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select active' : 'select'}
+                className={pageItems ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
                 disabled={pageItems ? true : false}
               >
@@ -114,7 +115,7 @@ export const API = () => {
             </Link>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select' : 'select active'}
+                className={pageItems ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
                 disabled={pageItems ? false : true}
               >

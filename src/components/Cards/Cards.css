@@ -24,7 +24,7 @@ span {
   font-weight: 400;
 }
 
-.link {
+a {
   text-decoration: none;
   color: black;
 }
