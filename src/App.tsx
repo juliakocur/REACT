@@ -22,7 +22,7 @@ export const App = () => {
         <main>
           <Context.Provider value={{ open, setOpen }}>
             <Search />
-            <div className="main__container">
+            <div className="container">
               <API />
               <Outlet />
             </div>
