@@ -1,0 +1,43 @@
+.modal__wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: right;
+  align-items: center;
+  z-index: 100;
+  margin-top: -20vh;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.modal__content {
+  width: 400px;
+  height: 100%;
+  z-index: 2;
+  background-color: hsl(0deg 0% 86.29% / 88%);
+  align-items: center;
+  display: flex;
+  position: relative;
+}
+
+.close__button {
+  position: absolute;
+  right: 20px;
+  top: 30px;
+  font-size: 30px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.loader__container {
+  margin: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

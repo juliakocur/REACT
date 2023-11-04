@@ -1,69 +1,48 @@
-import React from 'react';
+import { API } from './components/API/API';
 import Search from './components/Search/Search';
-import Cards from './components/Cards/Cards';
-import Loader from './components/Loader/Loader';
-
-import { IShips as ShipsCard } from './components/Types/index';
+import Modal from './components/Modal/Modal';
+import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
+import { createContext } from 'react';
+import { useState } from 'react';
 import './App.css';
 
-class App extends React.Component {
-  array: ShipsCard[] = [];
-  val: boolean = true;
+type MyContext = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-  getShips = async (URL: string) => {
-    this.val = false;
-    const request = new Headers();
-    const res = await fetch(URL, {
-      method: 'GET',
-      headers: request,
-    });
-    const data = await res.json();
-    console.log(data);
-    this.array = data.results;
-    console.log(this.array);
-    this.setState({});
-    await this.val;
-  };
+export const Context = createContext<null | MyContext>(null);
 
-  componentDidMount(): void {
-    const value = localStorage.getItem('Value') ?? '';
-    if (value.length > 0) {
-      this.getShips(`https://swapi.dev/api/starships/?search=${value}`);
-    } else {
-      this.getShips('https://swapi.dev/api/starships');
-    }
-  }
+export const App = () => {
+  const [open, setOpen] = useState(false);
 
-  render() {
-    const shipItems = this.array.map((el, i) => (
-      <Cards
-        key={i}
-        name={el.name}
-        manufacturer={el.manufacturer}
-        passengers={el.passengers}
-        length={el.length}
-        model={el.model}
-        starship_class={el.starship_class}
-      />
-    ));
-
+  const Layout = () => {
     return (
       <>
-        <Search />
-        {this.val ? (
-          <div className="loader__container">
-            <Loader />
-          </div>
-        ) : this.array.length > 0 ? (
-          <div className="cards__container">{shipItems}</div>
-        ) : (
-          <h3 style={{ textAlign: 'center', color: 'white' }}>
-            No results found. Please try again with another search term.
-          </h3>
-        )}
+        <main>
+          <Context.Provider value={{ open, setOpen }}>
+            <Search />
+            <div className="container">
+              <API />
+              <Outlet />
+            </div>
+          </Context.Provider>
+        </main>
       </>
     );
-  }
-}
+  };
 
-export default App;
+  return (
+    <>
+      <main>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route path="/" element={<Modal />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </main>
+    </>
+  );
+};
