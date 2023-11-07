@@ -21,12 +21,12 @@ export const API = () => {
   useEffect(() => {
     async function createCardApi() {
       setVal(true);
-      const URL: string = 'https://swapi.dev/api/starships';
-      const urlHasLS: string = `${URL}/?search=${localStorage.getItem(
-        'Value'
-      )}&page=${currentPage}`;
-      const urlPage: string = `${URL}/?page=${currentPage}`;
       const valueLS = localStorage.getItem('Value') ?? '';
+      context?.setFieldValue(valueLS);
+      const contextLS = context?.fieldValue;
+      const URL: string = 'https://swapi.dev/api/starships';
+      const urlHasLS: string = `${URL}/?search=${contextLS}&page=${currentPage}`;
+      const urlPage: string = `${URL}/?page=${currentPage}`;
       const url = valueLS.length > 0 ? urlHasLS : urlPage;
       const request = new Headers();
       const res = await fetch(url, {
@@ -52,9 +52,11 @@ export const API = () => {
   async function createCardApi() {
     setVal(true);
     const URL: string = 'https://swapi.dev/api/starships';
-    const urlHasLS: string = `${URL}/?search=${localStorage.getItem('Value')}&page=1`;
-    const urlPage: string = `${URL}/?page=1`;
     const valueLS = localStorage.getItem('Value') ?? '';
+    context?.setFieldValue(valueLS);
+    const contextLS = context?.fieldValue;
+    const urlHasLS: string = `${URL}/?search=${contextLS}&page=1`;
+    const urlPage: string = `${URL}/?page=1`;
     const url = valueLS.length > 0 ? urlHasLS : urlPage;
     const request = new Headers();
     const res = await fetch(url, {

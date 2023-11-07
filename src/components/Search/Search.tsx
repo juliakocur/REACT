@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import React from 'react';
 import search from '../../assets/search.svg';
 import logo from '../../assets/logo.png';
 import ErrorButton from '../ErrorButton/ErrorButton';
