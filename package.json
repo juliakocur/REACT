@@ -11,9 +11,10 @@
     "prettier": "prettier --check src",
     "prettier:fix": "prettier --write src",
     "preview": "vite preview",
-    "test": "test --watchAll=false",
+    "test": "vitest --run",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -51,7 +52,8 @@
   "lint-staged": {  
   "*.{ts,tsx}": [ 
       "npm run lint:fix", 
-      "npm run prettier:fix"
+      "npm run prettier:fix",
+      "npm run test"
   ] 
  } 
 }
