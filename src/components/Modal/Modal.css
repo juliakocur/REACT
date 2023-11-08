@@ -5,7 +5,7 @@
   height: 100vh;
   justify-content: right;
   align-items: center;
-  background: rgba(0,0,0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 100;
   margin-top: -20vh;
 }
@@ -44,13 +44,13 @@
   transform: translate(-50%, -50%);
 }
 
-@media(max-width: 900px) {
+@media (max-width: 900px) {
   .modal__wrapper {
     margin-top: -150px;
   }
 }
 
-@media(max-width: 450px) {
+@media (max-width: 450px) {
   .modal__wrapper {
     margin-top: -135px;
   }

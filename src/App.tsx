@@ -2,7 +2,7 @@ import { API } from './components/API/API';
 import Search from './components/Search/Search';
 import Modal from './components/Modal/Modal';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
-import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { createContext } from 'react';
 import { useState } from 'react';
 import { IShips as ShipsCard } from './components/Types/index';
@@ -45,14 +45,12 @@ export const App = () => {
   return (
     <>
       <main>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route path="/" element={<Modal />} />
-            </Route>
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/" element={<Modal />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
     </>
   );
