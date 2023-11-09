@@ -2,6 +2,7 @@ import { describe, it } from 'vitest';
 import { render, screen, act, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import Cards from '../components/Cards/Cards';
+import '@testing-library/jest-dom';
 import { dataTest } from './mockData';
 import { MemoryRouter } from 'react-router-dom';
 

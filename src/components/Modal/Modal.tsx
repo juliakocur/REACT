@@ -85,7 +85,7 @@ const Modal = () => {
         ) : (
           <div className="modal__wrapper">
             <div className="modal__content" ref={ref}>
-              <button className="close__button" onClick={closeModal}>
+              <button className="close__button" onClick={closeModal} data-testid="close">
                 X
               </button>
               <div className="cards__container">{cardItem}</div>

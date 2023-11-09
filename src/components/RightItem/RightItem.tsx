@@ -3,7 +3,7 @@ import './RightItem.css';
 
 const RightItem = (props: StarShips) => {
   return (
-    <div className="modal">
+    <div className="modal" data-testid="details">
       <h3 className="cards__header">{props.name}</h3>
       <p className="cards__description">
         Manufacturer: <span>{props.manufacturer}</span>
