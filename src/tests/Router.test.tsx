@@ -15,3 +15,14 @@ describe('App', () => {
     );
   });
 });
+
+describe('App', () => {
+  it('Route not found', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('search-field')).toBeInTheDocument();
+  });
+});

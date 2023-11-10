@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/48</span>
+                <span class='fraction'>57/57</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/48</span>
+                <span class='fraction'>57/57</span>
             </div>
         
             
@@ -111,7 +111,16 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -133,6 +142,11 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -149,39 +163,53 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { API } from './components/API/API';
 import Search from './components/Search/Search';
 import Modal from './components/Modal/Modal';
-import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { createContext } from 'react';
 import { useState } from 'react';
+import { IShips as ShipsCard } from './components/Types/index';
 import './App.css';
 &nbsp;
 type MyContext = {
   open: boolean;
   setOpen: React.Dispatch&lt;React.SetStateAction&lt;boolean&gt;&gt;;
+  fieldValue: string;
+  setFieldValue: React.Dispatch&lt;React.SetStateAction&lt;string&gt;&gt;;
+  arrayApi: ShipsCard[];
+  setArrayApi: React.Dispatch&lt;React.SetStateAction&lt;ShipsCard[]&gt;&gt;;
 };
 &nbsp;
 export const Context = createContext&lt;null | MyContext&gt;(null);
 &nbsp;
 export const App = () =&gt; {
   const [open, setOpen] = useState(false);
+  const [fieldValue, setFieldValue] = useState('');
+  const [arrayApi, setArrayApi] = useState&lt;ShipsCard[]&gt;([]);
 &nbsp;
   const Layout = () =&gt; {
     return (
       &lt;&gt;
         &lt;main&gt;
-          &lt;Context.Provider value={{ open, setOpen }}&gt;
+          &lt;Context.Provider
+            value={{ open, setOpen, fieldValue, setFieldValue, arrayApi, setArrayApi }}
+          &gt;
             &lt;Search /&gt;
             &lt;div className="container"&gt;
               &lt;API /&gt;
@@ -196,13 +224,12 @@ export const App = () =&gt; {
   return (
     &lt;&gt;
       &lt;main&gt;
-        &lt;BrowserRouter&gt;
-          &lt;Routes&gt;
-            &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
-              &lt;Route path="/" element={&lt;Modal /&gt;} /&gt;
-            &lt;/Route&gt;
-          &lt;/Routes&gt;
-        &lt;/BrowserRouter&gt;
+        &lt;Routes&gt;
+          &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
+            &lt;Route path="/" element={&lt;Modal /&gt;} /&gt;
+          &lt;/Route&gt;
+          &lt;Route path="*" element={&lt;NotFoundPage /&gt;} /&gt;
+        &lt;/Routes&gt;
       &lt;/main&gt;
     &lt;/&gt;
   );
@@ -214,7 +241,7 @@ export const App = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-07T09:19:09.645Z
+                at 2023-11-10T15:32:06.949Z
             </div>
         <script src="../prettify.js"></script>
         <script>

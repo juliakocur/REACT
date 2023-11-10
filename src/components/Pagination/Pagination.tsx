@@ -17,6 +17,7 @@ const Pagination = ({ currentPage, setCurrentPage, pageCount }: IPagin) => {
       {pages.map((page) => (
         <NavLink to={`/?page=${page}`} key={page}>
           <button
+            data-testid="pagination"
             key={page}
             className={`page__button ${page === currentPage ? 'active__num' : ''}`}
             disabled={page === currentPage}
