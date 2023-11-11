@@ -71,7 +71,7 @@ const Modal = () => {
     return (
       <>
         {val ? (
-          <div className="modal__wrapper">
+          <div className="modal__wrapper" data-testid="modal">
             <div className="modal__content" ref={ref}>
               <button className="close__button" onClick={closeModal}>
                 X
@@ -83,9 +83,9 @@ const Modal = () => {
             <div className="overlay"></div>
           </div>
         ) : (
-          <div className="modal__wrapper">
+          <div className="modal__wrapper" data-testid="modal">
             <div className="modal__content" ref={ref}>
-              <button className="close__button" onClick={closeModal}>
+              <button className="close__button" onClick={closeModal} data-testid="close">
                 X
               </button>
               <div className="cards__container">{cardItem}</div>
@@ -97,7 +97,7 @@ const Modal = () => {
     );
   }
 
-  return <div></div>;
+  return <div className="no__modal" data-testid="not-modal" onClick={closeModal}></div>;
 };
 
 export default Modal;

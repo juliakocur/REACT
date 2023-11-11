@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 const Cards = (props: StarShips) => {
   return (
     <NavLink to={`/?page=${props.page}&search=${props.name}`}>
-      <div className="cards" onClick={props.onClick}>
+      <div className="cards" data-testid="card-test" onClick={props.onClick}>
         <h3 className="cards__header">{props.name}</h3>
         <p className="cards__description">
           Manufacturer: <span>{props.manufacturer}</span>
