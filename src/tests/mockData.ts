@@ -1,5 +1,16 @@
 import { IShips as IData } from '../components/Types/index';
 
+export const dataTestOne: IData[] = [
+  {
+    name: 'CR90 corvette',
+    model: 'CR90 corvette',
+    manufacturer: 'Corellian Engineering Corporation',
+    length: 150,
+    passengers: 600,
+    starship_class: 'corvette',
+  },
+];
+
 export const dataTest: IData[] = [
   {
     name: 'CR90 corvette',

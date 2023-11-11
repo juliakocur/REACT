@@ -32,7 +32,7 @@ const Search = () => {
           type="text"
           placeholder="search ..."
           value={value}
-          onInput={handleChange}
+          onChange={handleChange}
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
         <img src={search} className="search__icon" alt="icon"></img>

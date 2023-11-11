@@ -1,9 +1,8 @@
 import Search from '../components/Search/Search';
 import { render, screen } from '@testing-library/react';
-
 import '@testing-library/jest-dom';
-
 import userEvent from '@testing-library/user-event';
+import { fireEvent } from '@testing-library/dom';
 
 describe('Search', () => {
   beforeEach(() => {
@@ -22,13 +21,22 @@ describe('Search', () => {
     const setup = () => {
       render(<Search />);
     };
-    test('should save input value after submit', async () => {
+    it('should save input value after submit', async () => {
       setup();
       const input = screen.getByTestId('search-field');
-      expect(input).toBeTruthy();
-      expect(input.textContent).toBe('');
+      expect(input).toBeInTheDocument();
+      expect(input).toHaveValue('');
+      const value = 'bum';
+      fireEvent.change(input, { target: { value } });
+      expect(input).toHaveValue('bum');
+
       input.textContent = 'Test';
       userEvent.click(screen.getByTestId('click'));
+      userEvent.setup();
+      expect(input.textContent).toBe('Test');
+
+      const searchForm = screen.getByTestId('search-form');
+      userEvent.click(searchForm);
       userEvent.setup();
       expect(input.textContent).toBe('Test');
     });
