@@ -12,6 +12,7 @@ export const clickName: [] = [];
 
 import { increment } from '../../store/reducers/UserSlice';
 import { incrementLoad } from '../../store/reducers/MainLoading';
+import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
@@ -19,14 +20,15 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 export const API = () => {
   const [array, setArray] = useState<ShipsCard[]>([]);
   const [currentItems, setCurrentItems] = useState(1);
-  const [pageItems, setPageItems] = useState(true);
+  const [val, setVal] = useState(false);
   const context = React.useContext(Context);
   const dispatch = useAppDispatch();
   const setPage = useAppSelector((state: RootState) => state.page.page);
-  const isLoading = useAppSelector((state: RootState) => state.load.isLoading);
+  const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
 
   useEffect(() => {
     async function createCardApi() {
+      setVal(true);
       dispatch(incrementLoad(true));
       const valueLS = localStorage.getItem('Value') ?? '';
       context?.setFieldValue(valueLS);
@@ -41,13 +43,14 @@ export const API = () => {
         headers: request,
       });
       const data = await res.json();
-      if (!pageItems) {
+      if (itemsPerPage === 5) {
         setArray(data.results.splice(0, 5));
       } else {
         setArray(data.results);
       }
       setCurrentItems(Math.ceil(data.count / 10));
       dispatch(incrementLoad(false));
+      setVal(false);
     }
     createCardApi();
   }, [setPage]);
@@ -57,6 +60,7 @@ export const API = () => {
   };
 
   async function createCardApi() {
+    setVal(true);
     dispatch(incrementLoad(true));
     const URL: string = 'https://swapi.dev/api/starships';
     const valueLS = localStorage.getItem('Value') ?? '';
@@ -71,13 +75,14 @@ export const API = () => {
       headers: request,
     });
     const data = await res.json();
-    if (pageItems) {
+    if (itemsPerPage === 10) {
       setArray(data.results.splice(0, 5));
     } else {
       setArray(data.results);
     }
     setCurrentItems(Math.ceil(data.count / 10));
     dispatch(incrementLoad(false));
+    setVal(false);
   }
 
   const shipItems = array.map((el, i) => (
@@ -98,14 +103,14 @@ export const API = () => {
   ));
 
   const changeItemsNumber = () => {
-    pageItems ? setPageItems(false) : setPageItems(true);
+    itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
     dispatch(increment(1));
     createCardApi();
   };
 
   return (
     <>
-      {isLoading ? (
+      {val ? (
         <div className="loader__container">
           <Loader />
         </div>
@@ -115,18 +120,18 @@ export const API = () => {
             <span className="page__items__text">Count of items: </span>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select active__btn' : 'select'}
+                className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
-                disabled={pageItems ? true : false}
+                disabled={itemsPerPage === 10 ? true : false}
               >
                 10
               </button>
             </Link>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select' : 'select active__btn'}
+                className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
-                disabled={pageItems ? false : true}
+                disabled={itemsPerPage === 10 ? false : true}
               >
                 5
               </button>

@@ -4,6 +4,7 @@ import UserSlice from './reducers/UserSlice';
 import MainLoading from './reducers/MainLoading';
 import DetailLoading from './reducers/DetailLoading';
 import SearchValue from './reducers/SearchValue';
+import ItemsPerPage from './reducers/ItemsPerPage';
 
 export const setupStore = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const setupStore = configureStore({
     load: MainLoading,
     loadDetail: DetailLoading,
     value: SearchValue,
+    items: ItemsPerPage,
   },
 });
 
