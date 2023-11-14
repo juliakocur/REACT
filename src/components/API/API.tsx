@@ -13,6 +13,7 @@ export const clickName: [] = [];
 import { increment } from '../../store/reducers/UserSlice';
 import { incrementLoad } from '../../store/reducers/MainLoading';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
+import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
@@ -97,7 +98,8 @@ export const API = () => {
       starship_class={el.starship_class}
       onClick={() => {
         cardClick(el.name);
-        context?.setOpen(true);
+        // context?.setOpen(true);
+        dispatch(incrementViewMode(true));
       }}
     />
   ));

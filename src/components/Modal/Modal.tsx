@@ -1,25 +1,27 @@
 import { useState } from 'react';
 import RightItem from '../RightItem/RightItem';
 import { IShips as ShipsCard } from '../Types/index';
-import { Context } from '../../App';
-import { useContext, useEffect } from 'react';
+
+import { useEffect } from 'react';
 import Loader from '../Loader/Loader';
 import { useOutsideClick } from '../../useOutsideClick';
 
 import './Modal.css';
 
 import { incrementLoadDetail } from '../../store/reducers/DetailLoading';
-import { useAppDispatch } from '../../hooks/redux';
+import { incrementViewMode } from '../../store/reducers/ViewModeValue';
+import { RootState } from '../../store/store';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 
 const Modal = () => {
   const [cardChoose, setCardChoose] = useState<ShipsCard[]>([]);
   const [array, setArray] = useState<ShipsCard[]>([]);
   const [val, setVal] = useState(false);
-  const context = useContext(Context);
   const dispatch = useAppDispatch();
+  const viewMode = useAppSelector((state: RootState) => state.mode.isMode);
 
   const closeModal = () => {
-    context?.setOpen(false);
+    dispatch(incrementViewMode(false));
     history.pushState(null, 'Title', '/?page=1');
   };
 
@@ -28,10 +30,10 @@ const Modal = () => {
   });
 
   useEffect(() => {
-    if (context?.open) {
+    if (viewMode) {
       clickNameApi();
     }
-  }, []);
+  }, [viewMode]);
 
   async function clickNameApi() {
     setVal(true);
@@ -69,7 +71,7 @@ const Modal = () => {
     />
   ));
 
-  if (context?.open) {
+  if (viewMode) {
     return (
       <>
         {val ? (

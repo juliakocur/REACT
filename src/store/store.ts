@@ -5,6 +5,7 @@ import MainLoading from './reducers/MainLoading';
 import DetailLoading from './reducers/DetailLoading';
 import SearchValue from './reducers/SearchValue';
 import ItemsPerPage from './reducers/ItemsPerPage';
+import ViewModeValue from './reducers/ViewModeValue';
 
 export const setupStore = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const setupStore = configureStore({
     loadDetail: DetailLoading,
     value: SearchValue,
     items: ItemsPerPage,
+    mode: ViewModeValue,
   },
 });
 
