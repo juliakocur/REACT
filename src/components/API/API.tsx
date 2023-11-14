@@ -11,14 +11,13 @@ import './API.css';
 export const clickName: [] = [];
 
 import { increment } from '../../store/reducers/UserSlice';
-import { incrementLoad } from '../../store/reducers/UserLoading';
+import { incrementLoad } from '../../store/reducers/MainLoading';
 
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 
 export const API = () => {
   const [array, setArray] = useState<ShipsCard[]>([]);
-  // const [val, setVal] = useState(false);
   const [currentItems, setCurrentItems] = useState(1);
   const [pageItems, setPageItems] = useState(true);
   const context = React.useContext(Context);

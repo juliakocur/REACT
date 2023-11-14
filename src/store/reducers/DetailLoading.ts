@@ -8,16 +8,16 @@ const initialState: UserState = {
   isLoading: false,
 };
 
-export const UserLoading = createSlice({
+export const DetailLoading = createSlice({
   name: 'load',
   initialState,
   reducers: {
-    incrementLoad: (state, action: PayloadAction<boolean>) => {
+    incrementLoadDetail: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
   },
 });
 
-export const { incrementLoad } = UserLoading.actions;
-export const setLoad = (state: RootState) => state.load.isLoading;
-export default UserLoading.reducer;
+export const { incrementLoadDetail } = DetailLoading.actions;
+export const setLoad = (state: RootState) => state.loadDetail.isLoading;
+export default DetailLoading.reducer;

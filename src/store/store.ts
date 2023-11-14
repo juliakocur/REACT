@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import UserSlice from './reducers/UserSlice';
-import UserLoading from './reducers/UserLoading';
+import MainLoading from './reducers/MainLoading';
+import DetailLoading from './reducers/DetailLoading';
 
 export const setupStore = configureStore({
   reducer: {
     page: UserSlice,
-    load: UserLoading,
+    load: MainLoading,
+    loadDetail: DetailLoading,
   },
 });
 

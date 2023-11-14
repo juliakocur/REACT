@@ -8,12 +8,15 @@ import { useOutsideClick } from '../../useOutsideClick';
 
 import './Modal.css';
 
+import { incrementLoadDetail } from '../../store/reducers/DetailLoading';
+import { useAppDispatch } from '../../hooks/redux';
+
 const Modal = () => {
   const [cardChoose, setCardChoose] = useState<ShipsCard[]>([]);
   const [array, setArray] = useState<ShipsCard[]>([]);
-  const [loadApi, setLoadApi] = useState(false);
   const [val, setVal] = useState(false);
   const context = useContext(Context);
+  const dispatch = useAppDispatch();
 
   const closeModal = () => {
     context?.setOpen(false);
@@ -32,7 +35,7 @@ const Modal = () => {
 
   async function clickNameApi() {
     setVal(true);
-    setLoadApi(true);
+    dispatch(incrementLoadDetail(true));
     const clickName = localStorage.getItem('Card');
     const URL: string = `https://swapi.dev/api/starships/?search=${clickName}`;
     const request = new Headers();
@@ -49,9 +52,8 @@ const Modal = () => {
     const arrFilter: ShipsCard[] = arr.filter((el) => el.name === clickName);
     setArray(arrFilter);
     console.log(arrFilter);
-    console.log(loadApi);
     console.log(cardChoose);
-    setLoadApi(false);
+    dispatch(incrementLoadDetail(false));
     setVal(false);
   }
 
