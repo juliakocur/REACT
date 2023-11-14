@@ -1,13 +1,13 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import UserSlice from './reducers/UserSlice';
 
-const rootReducer = combineReducers({});
+export const setupStore = configureStore({
+  reducer: {
+    page: UserSlice,
+  },
+});
 
-export const setupStore = () => {
-  return configureStore({
-    reducer: rootReducer,
-  });
-};
-
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppStore = ReturnType<typeof setupStore>;
-export type AppDispatch = AppStore['dispatch'];
+setupListeners(setupStore.dispatch);
+export type AppDispatch = typeof setupStore.dispatch;
+export type RootState = ReturnType<typeof setupStore.getState>;

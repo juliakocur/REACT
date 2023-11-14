@@ -20,5 +20,4 @@ export interface IState {
 export type IPagination = {
   currentPage: number;
   pageCount: number;
-  setCurrentPage: (page: number) => void;
 };

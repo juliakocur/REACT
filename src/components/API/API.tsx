@@ -10,13 +10,18 @@ import { Link } from 'react-router-dom';
 import './API.css';
 export const clickName: [] = [];
 
+import { increment } from '../../store/reducers/UserSlice';
+import { RootState } from '../../store/store';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+
 export const API = () => {
   const [array, setArray] = useState<ShipsCard[]>([]);
   const [val, setVal] = useState(false);
   const [currentItems, setCurrentItems] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageItems, setPageItems] = useState(true);
   const context = React.useContext(Context);
+  const dispatch = useAppDispatch();
+  const setPage = useAppSelector((state: RootState) => state.page.page);
 
   useEffect(() => {
     async function createCardApi() {
@@ -25,8 +30,8 @@ export const API = () => {
       context?.setFieldValue(valueLS);
       const contextLS = context?.fieldValue;
       const URL: string = 'https://swapi.dev/api/starships';
-      const urlHasLS: string = `${URL}/?search=${contextLS}&page=${currentPage}`;
-      const urlPage: string = `${URL}/?page=${currentPage}`;
+      const urlHasLS: string = `${URL}/?search=${contextLS}&page=${setPage}`;
+      const urlPage: string = `${URL}/?page=${setPage}`;
       const url = valueLS.length > 0 ? urlHasLS : urlPage;
       const request = new Headers();
       const res = await fetch(url, {
@@ -43,7 +48,7 @@ export const API = () => {
       setVal(false);
     }
     createCardApi();
-  }, [currentPage]);
+  }, [setPage]);
 
   const cardClick = (name: string) => {
     localStorage.setItem('Card', name);
@@ -76,7 +81,7 @@ export const API = () => {
   const shipItems = array.map((el, i) => (
     <Cards
       key={i}
-      page={currentPage}
+      page={setPage}
       name={el.name}
       manufacturer={el.manufacturer}
       passengers={el.passengers}
@@ -92,7 +97,7 @@ export const API = () => {
 
   const changeItemsNumber = () => {
     pageItems ? setPageItems(false) : setPageItems(true);
-    setCurrentPage(1);
+    dispatch(increment(1));
     createCardApi();
   };
 
@@ -126,11 +131,7 @@ export const API = () => {
             </Link>
           </div>
           <div className="cards__container">{shipItems}</div>
-          <Pagination
-            currentPage={currentPage}
-            pageCount={currentItems}
-            setCurrentPage={setCurrentPage}
-          />
+          <Pagination currentPage={setPage} pageCount={currentItems} />
         </div>
       ) : (
         <NoResultText />

@@ -1,8 +1,11 @@
 import './Pagination.css';
 import { NavLink } from 'react-router-dom';
 import { IPagination as IPagin } from '../Types/index';
+import { increment } from '../../store/reducers/UserSlice';
+import { useAppDispatch } from '../../hooks/redux';
 
-const Pagination = ({ currentPage, setCurrentPage, pageCount }: IPagin) => {
+const Pagination = ({ currentPage, pageCount }: IPagin) => {
+  const dispatch = useAppDispatch();
   const pages = [];
   for (let i = 1; i <= pageCount; i += 1) {
     pages.push(i);
@@ -22,7 +25,7 @@ const Pagination = ({ currentPage, setCurrentPage, pageCount }: IPagin) => {
             className={`page__button ${page === currentPage ? 'active__num' : ''}`}
             disabled={page === currentPage}
             onClick={() => {
-              setCurrentPage(page);
+              dispatch(increment(page));
               handleClick(page);
             }}
           >
