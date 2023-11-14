@@ -1,5 +1,5 @@
 export interface IShips {
-  page?: number;
+  page?: string;
   name: string;
   manufacturer: string;
   passengers: number;
@@ -18,6 +18,7 @@ export interface IState {
 }
 
 export type IPagination = {
-  currentPage: number;
+  currentPage: string;
   pageCount: number;
+  setPages: (page: string) => void;
 };

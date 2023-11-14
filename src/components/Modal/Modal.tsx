@@ -22,7 +22,6 @@ const Modal = () => {
 
   const closeModal = () => {
     dispatch(incrementViewMode(false));
-    history.pushState(null, 'Title', '/?page=1');
   };
 
   const ref = useOutsideClick(() => {
