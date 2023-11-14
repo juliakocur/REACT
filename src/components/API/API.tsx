@@ -11,21 +11,24 @@ import './API.css';
 export const clickName: [] = [];
 
 import { increment } from '../../store/reducers/UserSlice';
+import { incrementLoad } from '../../store/reducers/UserLoading';
+
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 
 export const API = () => {
   const [array, setArray] = useState<ShipsCard[]>([]);
-  const [val, setVal] = useState(false);
+  // const [val, setVal] = useState(false);
   const [currentItems, setCurrentItems] = useState(1);
   const [pageItems, setPageItems] = useState(true);
   const context = React.useContext(Context);
   const dispatch = useAppDispatch();
   const setPage = useAppSelector((state: RootState) => state.page.page);
+  const isLoading = useAppSelector((state: RootState) => state.load.isLoading);
 
   useEffect(() => {
     async function createCardApi() {
-      setVal(true);
+      dispatch(incrementLoad(true));
       const valueLS = localStorage.getItem('Value') ?? '';
       context?.setFieldValue(valueLS);
       const contextLS = context?.fieldValue;
@@ -45,7 +48,7 @@ export const API = () => {
         setArray(data.results);
       }
       setCurrentItems(Math.ceil(data.count / 10));
-      setVal(false);
+      dispatch(incrementLoad(false));
     }
     createCardApi();
   }, [setPage]);
@@ -55,7 +58,7 @@ export const API = () => {
   };
 
   async function createCardApi() {
-    setVal(true);
+    dispatch(incrementLoad(true));
     const URL: string = 'https://swapi.dev/api/starships';
     const valueLS = localStorage.getItem('Value') ?? '';
     context?.setFieldValue(valueLS);
@@ -75,7 +78,7 @@ export const API = () => {
       setArray(data.results);
     }
     setCurrentItems(Math.ceil(data.count / 10));
-    setVal(false);
+    dispatch(incrementLoad(false));
   }
 
   const shipItems = array.map((el, i) => (
@@ -103,7 +106,7 @@ export const API = () => {
 
   return (
     <>
-      {val ? (
+      {isLoading ? (
         <div className="loader__container">
           <Loader />
         </div>
