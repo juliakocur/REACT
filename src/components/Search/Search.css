@@ -19,9 +19,11 @@
   border-radius: 5px;
 }
 
-.search__icon {
+.searchClick {
   width: 25px;
   margin-left: -35px;
+  background: transparent;
+  border: none;
 }
 
 .search__button {

@@ -1,25 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import React from 'react';
 import search from '../../assets/search.svg';
 import logo from '../../assets/logo.png';
 import ErrorButton from '../ErrorButton/ErrorButton';
 import './Search.css';
 
+import { incrementInput } from '../../store/reducers/SearchValue';
+import { RootState } from '../../store/store';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+
 const Search = () => {
-  const [value, setValue] = useState(localStorage.getItem('Value') ?? '');
+  const inputValue = useAppSelector((state: RootState) => state.value.input);
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(event.target.value);
+    dispatch(incrementInput(event.target.value));
     localStorage.setItem('Value', event.target.value);
   };
 
   const saveData = (): void => {
-    localStorage.setItem('Value', value);
+    localStorage.setItem('Value', inputValue);
+    console.log(inputValue);
+  };
+
+  const clickCTA = (): void => {
+    dispatch(incrementInput(localStorage.getItem('Value') ?? ''));
   };
 
   useEffect(() => {
-    localStorage.setItem('Value', value);
-  }, [value]);
+    localStorage.setItem('Value', inputValue);
+  }, [inputValue]);
 
   return (
     <div className="search">
@@ -31,11 +41,13 @@ const Search = () => {
           className="search__field"
           type="text"
           placeholder="search ..."
-          value={value}
+          value={inputValue}
           onChange={handleChange}
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
-        <img src={search} className="search__icon" alt="icon"></img>
+        <button className="searchClick" onClick={clickCTA}>
+          <img src={search} className="search__icon" alt="icon"></img>
+        </button>
       </form>
       <ErrorButton />
     </div>
