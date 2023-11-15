@@ -29,25 +29,14 @@ const Modal = () => {
     setItem(LS ?? '');
   }, [viewMode]);
 
-  const cardItem = param?.results
-    .slice(0, 1)
-    .map((el, i) => (
-      <RightItem
-        key={i}
-        name={el.name}
-        manufacturer={el.manufacturer}
-        passengers={el.passengers}
-        length={el.length}
-        model={el.model}
-        starship_class={el.starship_class}
-      />
-    ));
-
   return (
     <>
       {isFetching ? (
         <div className={!viewMode ? 'modal__wrapper right' : 'modal__wrapper'} data-testid="modal">
           <div className="modal__content" ref={ref}>
+            <button className="close__button" onClick={closeModal} data-testid="close">
+              X
+            </button>
             <div className="loader__container">
               <Loader />
             </div>
@@ -60,7 +49,21 @@ const Modal = () => {
             <button className="close__button" onClick={closeModal} data-testid="close">
               X
             </button>
-            <div className="cards__container">{cardItem}</div>
+            <div className="cards__container">
+              {param?.results
+                .slice(0, 1)
+                .map((el, i) => (
+                  <RightItem
+                    key={i}
+                    name={el.name}
+                    manufacturer={el.manufacturer}
+                    passengers={el.passengers}
+                    length={el.length}
+                    model={el.model}
+                    starship_class={el.starship_class}
+                  />
+                ))}
+            </div>
           </div>
           <div className="overlay" data-testid="overlay"></div>
         </div>

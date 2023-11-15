@@ -18,6 +18,8 @@ describe('Cards', () => {
     fireEvent.click(screen.getByRole('link'));
     expect(screen.getByTestId('card-test')).toHaveTextContent(dataTest[0].model);
     expect(screen.getByTestId('card-test')).toHaveTextContent(dataTest[0].manufacturer);
+    userEvent.click(screen.getByTestId('card-test'));
+    expect(localStorage.getItem('Card') === 'CR90 corvette');
   });
 });
 

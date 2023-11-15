@@ -71,8 +71,9 @@ describe('Card in modal', () => {
     });
   });
 });
-
+import { vi } from 'vitest';
 describe('Modal', () => {
+  const func = vi.fn();
   it('Modal render', () => {
     render(
       <MemoryRouter>
@@ -83,5 +84,9 @@ describe('Modal', () => {
     );
     expect(screen.getByTestId('modal')).toBeInTheDocument;
     expect(screen.getAllByTestId('loader')).toBeInTheDocument;
+    expect(screen.getByTestId('close')).toBeInTheDocument;
+    userEvent.click(screen.getByTestId('close'));
+    expect(screen.getByTestId('modal')).not.toBeInTheDocument;
+    expect(func).toBeCalled;
   });
 });
