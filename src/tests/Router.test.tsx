@@ -2,6 +2,8 @@ import { describe, it } from 'vitest';
 import { App } from '../App';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { setupStore } from '../store/store';
 
 describe('App', () => {
   it('Route not found', () => {
@@ -20,7 +22,9 @@ describe('App', () => {
   it('Route not found', () => {
     render(
       <MemoryRouter>
-        <App />
+        <Provider store={setupStore}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
     expect(screen.getByTestId('search-field')).toBeInTheDocument();

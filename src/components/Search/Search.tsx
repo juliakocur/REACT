@@ -25,6 +25,7 @@ const Search = () => {
 
   const clickCTA = (): void => {
     dispatch(incrementInput(localStorage.getItem('Value') ?? ''));
+    console.log('close');
   };
 
   useEffect(() => {
@@ -45,7 +46,7 @@ const Search = () => {
           onChange={handleChange}
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
-        <button className="searchClick" onClick={clickCTA}>
+        <button className="searchClick" data-testid="cta-button" onClick={clickCTA}>
           <img src={search} className="search__icon" alt="icon"></img>
         </button>
       </form>

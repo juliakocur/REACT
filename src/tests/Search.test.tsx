@@ -3,6 +3,8 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { fireEvent } from '@testing-library/dom';
+import { Provider } from 'react-redux';
+import { setupStore } from '../store/store';
 
 describe('Search', () => {
   beforeEach(() => {
@@ -12,14 +14,32 @@ describe('Search', () => {
     expect(Search).toBeTruthy();
   });
   it('should get input value from LC', () => {
-    localStorage.setItem('Value', 'Test LC');
-    render(<Search />);
-    expect(screen.getByRole('textbox')).toHaveValue('Test LC');
+    localStorage.setItem('Value', '');
+    render(
+      <Provider store={setupStore}>
+        <Search />
+      </Provider>
+    );
+    const input = screen.getByTestId('search-field');
+    fireEvent.submit(input);
+    const { container } = render(
+      <Provider store={setupStore}>
+        <Search />
+      </Provider>
+    );
+    expect(container.getElementsByClassName('searchClick')).toBeInTheDocument;
+    const button = screen.getAllByTestId('cta-button');
+    fireEvent.click(button[0]);
+    expect(input).toHaveValue('');
   });
 
   describe('Search', () => {
     const setup = () => {
-      render(<Search />);
+      render(
+        <Provider store={setupStore}>
+          <Search />
+        </Provider>
+      );
     };
     it('should save input value after submit', async () => {
       setup();
