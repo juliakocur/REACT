@@ -11,7 +11,7 @@ export const App = () => {
       <>
         <main>
           <Search />
-          <div className="container">
+          <div className="container" data-testid="main">
             <API />
             <Outlet />
           </div>

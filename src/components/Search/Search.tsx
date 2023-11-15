@@ -33,7 +33,7 @@ const Search = () => {
   }, [inputValue]);
 
   return (
-    <div className="search">
+    <div className="search" data-testid="search">
       <img src={logo} className="logo" alt="logo"></img>
       <form className="search__form" data-testid="search-form" onSubmit={saveData}>
         <input

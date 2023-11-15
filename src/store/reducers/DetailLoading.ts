@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 interface UserState {
   isLoading: boolean;
 }
@@ -19,5 +18,4 @@ export const DetailLoading = createSlice({
 });
 
 export const { incrementLoadDetail } = DetailLoading.actions;
-export const setLoad = (state: RootState) => state.loadDetail.isLoading;
 export default DetailLoading.reducer;

@@ -1,6 +1,6 @@
 import { render, act, screen, waitFor } from '@testing-library/react';
-import { dataTest } from './mockData';
-import { dataTestOne } from './mockData';
+import { dataTest } from './mock/mockData';
+import { dataTestOne } from './mock/mockData';
 import { MemoryRouter } from 'react-router-dom';
 import RightItem from '../components/RightItem/RightItem';
 import Modal from '../components/Modal/Modal';
@@ -38,49 +38,8 @@ describe('Modal', () => {
     expect(container.getElementsByClassName('close__button')).toBeInTheDocument;
     const button = container.getElementsByClassName('close__button');
     userEvent.click(button[0]);
-    expect(console.log('close'));
     expect(container.getElementsByClassName('modal__wrapper')).not.toBeInTheDocument;
     expect(button).toBeCalled;
-  });
-});
-
-describe('Modal', () => {
-  it('should render successfully', () => {
-    expect(true).toBeTruthy();
-  });
-  it('should render Modal', async () => {
-    await act(async () => {
-      render(
-        <Provider store={setupStore}>
-          <Modal />
-        </Provider>
-      );
-    });
-    const close = screen.getByTestId('not-modal');
-    expect(close).toBeInTheDocument;
-    userEvent.click(close);
-    expect(close).toBeCalled;
-    expect(close).not.toBeInTheDocument;
-  });
-});
-
-describe('Modal', () => {
-  it('should render successfully', () => {
-    expect(true).toBeTruthy();
-  });
-  it('should render Modal', async () => {
-    await act(async () => {
-      render(
-        <Provider store={setupStore}>
-          <Modal />
-        </Provider>
-      );
-    });
-    // const close = screen.getByTestId('modal');
-    // expect(close).toBeInTheDocument;
-    // userEvent.click(close);
-    // expect(close).toBeCalled;
-    // expect(close).not.toBeInTheDocument;
   });
 });
 
@@ -110,5 +69,19 @@ describe('Card in modal', () => {
     await waitFor(() => {
       expect(screen.getAllByTestId('details')).toBeInTheDocument;
     });
+  });
+});
+
+describe('Modal', () => {
+  it('Modal render', () => {
+    render(
+      <MemoryRouter>
+        <Provider store={setupStore}>
+          <Modal />
+        </Provider>
+      </MemoryRouter>
+    );
+    expect(screen.getByTestId('modal')).toBeInTheDocument;
+    expect(screen.getAllByTestId('loader')).toBeInTheDocument;
   });
 });

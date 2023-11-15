@@ -10,6 +10,11 @@
   margin-top: -20vh;
 }
 
+.right {
+  position: absolute;
+  right: -100%;
+}
+
 .overlay {
   position: absolute;
   width: 100%;

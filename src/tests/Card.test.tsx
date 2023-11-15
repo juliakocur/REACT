@@ -1,9 +1,9 @@
 import { describe, it } from 'vitest';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act, waitFor, fireEvent } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import Cards from '../components/Cards/Cards';
 import '@testing-library/jest-dom';
-import { dataTest } from './mockData';
+import { dataTest } from './mock/mockData';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('Cards', () => {
@@ -13,6 +13,11 @@ describe('Cards', () => {
         <Cards {...dataTest[0]} />
       </MemoryRouter>
     );
+    expect(screen.getByTestId('card-test')).toBeInTheDocument();
+    expect(screen.getByTestId('card-test')).toHaveTextContent(dataTest[0].name);
+    fireEvent.click(screen.getByRole('link'));
+    expect(screen.getByTestId('card-test')).toHaveTextContent(dataTest[0].model);
+    expect(screen.getByTestId('card-test')).toHaveTextContent(dataTest[0].manufacturer);
   });
 });
 
@@ -86,5 +91,15 @@ describe('API', () => {
     await waitFor(() => {
       expect(screen.getAllByTestId('card-test')).toHaveLength(5);
     });
+  });
+});
+
+import NoResultText from '../components/NoResultText/NoResultText';
+
+describe('NoResultText', () => {
+  it('should render NoResultText component', () => {
+    render(<NoResultText />);
+    expect(screen.getAllByText('No results found. Please try again with another search term.'))
+      .toBeInTheDocument;
   });
 });

@@ -33,8 +33,6 @@ describe('API', () => {
         </Provider>
       </MemoryRouter>
     );
-    expect(container.getElementsByClassName('cards')).toBeInTheDocument;
-    expect(container.getElementsByClassName('card__list')).toBeInTheDocument;
-    expect(container.getElementsByClassName('select active__btn')).toBeInTheDocument;
+    expect(container.getElementsByClassName('loader')).toBeInTheDocument;
   });
 });

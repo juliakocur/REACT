@@ -23,7 +23,11 @@ export const CreateApi = createApi({
     getStarships: builder.query<ICard, string>({
       query: (page) => `?search=${localStorage.getItem('Value') ?? ''}&page=${page}`,
     }),
+    getStarship: builder.query<ICard, string>({
+      query: (name) => `?search=${name}`,
+    }),
   }),
 });
 
 export const { useGetStarshipsQuery } = CreateApi;
+export const { useGetStarshipQuery } = CreateApi;

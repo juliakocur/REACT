@@ -23,7 +23,6 @@ export const API = () => {
   const { data: param, isFetching } = useGetStarshipsQuery(pages);
 
   useEffect(() => {
-    console.log(param?.results);
     async function createCardApi() {
       if (param?.count) {
         setCurrentItems(Math.ceil(param?.count / 10));
@@ -103,6 +102,7 @@ export const API = () => {
                 className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
                 disabled={itemsPerPage === 10 ? true : false}
+                data-testid="btn-10"
               >
                 10
               </button>
@@ -112,6 +112,7 @@ export const API = () => {
                 className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
                 disabled={itemsPerPage === 10 ? false : true}
+                data-testid="btn-5"
               >
                 5
               </button>
