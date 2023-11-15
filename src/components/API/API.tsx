@@ -4,12 +4,10 @@ import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
-import { Context } from '../../App';
 import { Link } from 'react-router-dom';
 import './API.css';
 export const clickName: [] = [];
 
-import { incrementLoad } from '../../store/reducers/MainLoading';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 
@@ -20,20 +18,16 @@ import { useGetStarshipsQuery } from '../../store/reducers/CreateApi';
 export const API = () => {
   const [currentItems, setCurrentItems] = useState(1);
   const [pages, setPages] = useState('1');
-  const context = React.useContext(Context);
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
-  const { data: param, isLoading } = useGetStarshipsQuery(pages);
+  const { data: param, isFetching } = useGetStarshipsQuery(pages);
 
   useEffect(() => {
+    console.log(param?.results);
     async function createCardApi() {
-      dispatch(incrementLoad(true));
-      const valueLS = localStorage.getItem('Value') ?? '';
-      context?.setFieldValue(valueLS);
       if (param?.count) {
         setCurrentItems(Math.ceil(param?.count / 10));
       }
-      dispatch(incrementLoad(false));
     }
     createCardApi();
   }, [param]);
@@ -43,13 +37,9 @@ export const API = () => {
   };
 
   async function createCardApi() {
-    dispatch(incrementLoad(true));
-    const valueLS = localStorage.getItem('Value') ?? '';
-    context?.setFieldValue(valueLS);
     if (param?.count) {
       setCurrentItems(Math.ceil(param?.count / 10));
     }
-    dispatch(incrementLoad(false));
   }
 
   const shipItems = () => {
@@ -95,13 +85,16 @@ export const API = () => {
     createCardApi();
   };
 
+  if (isFetching)
+    return (
+      <div className="loader__container">
+        <Loader />
+      </div>
+    );
+
   return (
     <>
-      {isLoading ? (
-        <div className="loader__container">
-          <Loader />
-        </div>
-      ) : param?.results ? (
+      {param?.results[0] ? (
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>

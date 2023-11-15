@@ -67,6 +67,15 @@
     top: 10px;
     max-width: 100px;
   }
+
+  .searchClick {
+    margin-left: -15px;
+  }
+
+  .searchClick img {
+    z-index: 1;
+    position: relative;
+  }
 }
 
 @media (max-width: 450px) {

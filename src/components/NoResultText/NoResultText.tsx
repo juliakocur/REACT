@@ -8,7 +8,7 @@ const NoResultText = () => {
     }, 0);
   }, []);
 
-  return <h3 style={{ textAlign: 'center', color: 'white' }}>{data}</h3>;
+  return <h3 style={{ textAlign: 'center', color: 'white', margin: '30px' }}>{data}</h3>;
 };
 
 export default NoResultText;
