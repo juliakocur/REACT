@@ -8,28 +8,41 @@ import { Link } from 'react-router-dom';
 import './API.css';
 export const clickName: [] = [];
 
-import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
+import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
+import { decrementPerPage } from '../../store/reducers/ItemsPerPage';
 
 import { RootState } from '../../store/store';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useGetStarshipsQuery } from '../../store/reducers/CreateApi';
 
 export const API = () => {
   const [currentItems, setCurrentItems] = useState(1);
   const [pages, setPages] = useState('1');
+  const [perPages, setPerPages] = useState(10);
   const dispatch = useAppDispatch();
-  const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
+  const itemsPerPage = useAppSelector((state: RootState) => state.items);
   const { data: param, isFetching } = useGetStarshipsQuery(pages);
 
   useEffect(() => {
     if (param?.count) {
       setCurrentItems(Math.ceil(param?.count / 10));
+      setTimeout(() => {
+        if (perPages === 10) {
+          dispatch(decrementPerPage());
+          dispatch(incrementPerPage(param?.results));
+          console.log(itemsPerPage);
+        } else if (perPages === 5) {
+          dispatch(decrementPerPage());
+          dispatch(incrementPerPage(param?.results.slice(0, 5)));
+          console.log(itemsPerPage);
+        }
+      }, 0);
     }
   }, [param]);
 
   const shipItems = () => {
-    if (itemsPerPage === 10) {
+    if (perPages === 10) {
       return param?.results.map((el, i) => (
         <Cards
           key={i}
@@ -46,7 +59,7 @@ export const API = () => {
           }}
         />
       ));
-    } else if (itemsPerPage === 5) {
+    } else if (perPages === 5) {
       return param?.results.slice(0, 5).map((el, i) => (
         <Cards
           key={i}
@@ -66,7 +79,7 @@ export const API = () => {
     }
   };
   const changeItemsNumber = () => {
-    itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
+    perPages === 10 ? setPerPages(5) : setPerPages(10);
     setPages('1');
   };
 
@@ -85,9 +98,9 @@ export const API = () => {
             <span className="page__items__text">Count of items: </span>
             <Link to={`/?page=1`}>
               <button
-                className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
+                className={perPages === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
-                disabled={itemsPerPage === 10 ? true : false}
+                disabled={perPages === 10 ? true : false}
                 data-testid="btn-10"
               >
                 10
@@ -95,9 +108,9 @@ export const API = () => {
             </Link>
             <Link to={`/?page=1`}>
               <button
-                className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
+                className={perPages === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
-                disabled={itemsPerPage === 10 ? false : true}
+                disabled={perPages === 10 ? false : true}
                 data-testid="btn-5"
               >
                 5

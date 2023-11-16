@@ -14,6 +14,12 @@ interface IStarship {
 interface ICard {
   count: number;
   results: IStarship[];
+  name: string;
+  manufacturer: string;
+  passengers: number;
+  length: number;
+  model: string;
+  starship_class: string;
 }
 
 export const CreateApi = createApi({
