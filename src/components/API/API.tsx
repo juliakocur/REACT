@@ -23,23 +23,10 @@ export const API = () => {
   const { data: param, isFetching } = useGetStarshipsQuery(pages);
 
   useEffect(() => {
-    async function createCardApi() {
-      if (param?.count) {
-        setCurrentItems(Math.ceil(param?.count / 10));
-      }
-    }
-    createCardApi();
-  }, [param]);
-
-  const cardClick = (name: string) => {
-    localStorage.setItem('Card', name);
-  };
-
-  async function createCardApi() {
     if (param?.count) {
       setCurrentItems(Math.ceil(param?.count / 10));
     }
-  }
+  }, [param]);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {
@@ -54,7 +41,7 @@ export const API = () => {
           model={el.model}
           starship_class={el.starship_class}
           onClick={() => {
-            cardClick(el.name);
+            localStorage.setItem('Card', el.name);
             dispatch(incrementViewMode(true));
           }}
         />
@@ -71,7 +58,7 @@ export const API = () => {
           model={el.model}
           starship_class={el.starship_class}
           onClick={() => {
-            cardClick(el.name);
+            localStorage.setItem('Card', el.name);
             dispatch(incrementViewMode(true));
           }}
         />
@@ -81,7 +68,6 @@ export const API = () => {
   const changeItemsNumber = () => {
     itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
     setPages('1');
-    createCardApi();
   };
 
   if (isFetching)
