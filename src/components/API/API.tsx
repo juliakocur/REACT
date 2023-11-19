@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import React from 'react';
 import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
@@ -10,6 +9,7 @@ export const clickName: [] = [];
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
+import { incrementLoad } from '../../store/reducers/MainLoading';
 
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -21,12 +21,15 @@ export const API = () => {
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
   const { data: param, isFetching } = useGetStarshipsQuery(pages);
+  const setLoad = useAppSelector((state: RootState) => state.load.isLoading);
 
   useEffect(() => {
     if (param?.count) {
       setCurrentItems(Math.ceil(param?.count / 10));
+      dispatch(incrementLoad(isFetching));
+      console.log(setLoad);
     }
-  }, [param]);
+  }, [param, isFetching]);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {

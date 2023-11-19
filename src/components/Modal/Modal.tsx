@@ -6,6 +6,7 @@ import { useOutsideClick } from '../../useOutsideClick';
 import './Modal.css';
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
+import { incrementLoadDetail } from '../../store/reducers/DetailLoading';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { useGetStarshipQuery } from '../../store/reducers/CreateApi';
@@ -15,6 +16,7 @@ const Modal = () => {
   const dispatch = useAppDispatch();
   const viewMode = useAppSelector((state: RootState) => state.mode.isMode);
   const { data: param, isFetching } = useGetStarshipQuery(item);
+  const setLoad = useAppSelector((state: RootState) => state.loadDetail.isLoading);
 
   const closeModal = () => {
     dispatch(incrementViewMode(false));
@@ -27,7 +29,11 @@ const Modal = () => {
   useEffect(() => {
     const LS = localStorage.getItem('Card');
     setItem(LS ?? '');
-  }, [viewMode]);
+    if (param?.results) {
+      dispatch(incrementLoadDetail(isFetching));
+      console.log(setLoad);
+    }
+  }, [viewMode, isFetching]);
 
   if (viewMode) {
     return (
