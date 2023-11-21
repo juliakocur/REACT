@@ -3,7 +3,7 @@ import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import './API.css';
 export const clickName: [] = [];
 
@@ -86,7 +86,7 @@ export const API = () => {
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>
-            <Link to={`/?page=1`}>
+            <Link href={`/main?page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
@@ -96,7 +96,7 @@ export const API = () => {
                 10
               </button>
             </Link>
-            <Link to={`/?page=1`}>
+            <Link href={`/main?page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}

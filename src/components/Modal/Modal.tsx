@@ -20,6 +20,7 @@ const Modal = () => {
 
   const closeModal = () => {
     dispatch(incrementViewMode(false));
+    window.location.href = 'main?page=1';
   };
 
   const ref = useOutsideClick(() => {

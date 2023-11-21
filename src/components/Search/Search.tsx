@@ -3,6 +3,7 @@ import React from 'react';
 import search from '../../assets/search.svg';
 import logo from '../../assets/logo.png';
 import ErrorButton from '../ErrorButton/ErrorButton';
+import Image from 'next/image';
 import './Search.css';
 
 import { incrementInput } from '../../store/reducers/SearchValue';
@@ -34,7 +35,7 @@ const Search = () => {
 
   return (
     <div className="search" data-testid="search">
-      <img src={logo} className="logo" alt="logo"></img>
+      <Image src={logo} className="logo" alt="logo" />
       <form className="search__form" data-testid="search-form" onSubmit={saveData}>
         <input
           id="name"
@@ -47,7 +48,7 @@ const Search = () => {
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
         <button className="searchClick" data-testid="cta-button" onClick={clickCTA}>
-          <img src={search} className="search__icon" alt="icon"></img>
+          <Image src={search} className="search__icon" alt="icon" />
         </button>
       </form>
       <ErrorButton />

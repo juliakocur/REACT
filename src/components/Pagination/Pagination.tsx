@@ -1,5 +1,5 @@
 import './Pagination.css';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import { IPagination as IPagin } from '../Types/index';
 
 const Pagination = ({ currentPage, pageCount, setPages }: IPagin) => {
@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, pageCount, setPages }: IPagin) => {
   return (
     <div className="pagination__buttons">
       {pages.map((page) => (
-        <NavLink to={`/?page=${page}`} key={page}>
+        <Link href={`/main?page=${page}`} key={page}>
           <button
             data-testid="pagination"
             key={page}
@@ -28,7 +28,7 @@ const Pagination = ({ currentPage, pageCount, setPages }: IPagin) => {
           >
             {page}
           </button>
-        </NavLink>
+        </Link>
       ))}
     </div>
   );
