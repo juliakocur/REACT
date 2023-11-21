@@ -1,18 +1,21 @@
 import { render, act, screen, waitFor } from '@testing-library/react';
-import { dataTest } from './mockData';
-import { dataTestOne } from './mockData';
+import { dataTest } from './mock/mockData';
+import { dataTestOne } from './mock/mockData';
 import { MemoryRouter } from 'react-router-dom';
 import RightItem from '../components/RightItem/RightItem';
 import Modal from '../components/Modal/Modal';
 import userEvent from '@testing-library/user-event';
-import { Context } from '../App';
+import { Provider } from 'react-redux';
+import { setupStore } from '../store/store';
 
 describe('Details', async () => {
   await it('should render Details card', async () => {
     await act(async () => {
       render(
         <MemoryRouter>
-          <RightItem {...dataTest[0]} />
+          <Provider store={setupStore}>
+            <RightItem {...dataTest[0]} />
+          </Provider>
         </MemoryRouter>
       );
     });
@@ -26,61 +29,17 @@ describe('Modal', () => {
   it('should show loader and close details after click close button', () => {
     const { container } = render(
       <MemoryRouter>
-        <Modal />
+        <Provider store={setupStore}>
+          <Modal />
+        </Provider>
       </MemoryRouter>
     );
     expect(container.getElementsByClassName('loader')).toBeInTheDocument;
     expect(container.getElementsByClassName('close__button')).toBeInTheDocument;
     const button = container.getElementsByClassName('close__button');
     userEvent.click(button[0]);
-    expect(console.log('close'));
     expect(container.getElementsByClassName('modal__wrapper')).not.toBeInTheDocument;
     expect(button).toBeCalled;
-  });
-});
-
-describe('Modal', () => {
-  it('should render successfully', () => {
-    expect(true).toBeTruthy();
-  });
-  it('should render Modal', async () => {
-    await act(async () => {
-      render(<Modal />);
-    });
-    const close = screen.getByTestId('not-modal');
-    expect(close).toBeInTheDocument;
-    userEvent.click(close);
-    expect(close).toBeCalled;
-    expect(close).not.toBeInTheDocument;
-  });
-});
-
-describe('Modal', () => {
-  it('should render successfully', () => {
-    expect(true).toBeTruthy();
-  });
-  it('should render Modal', async () => {
-    await act(async () => {
-      render(
-        <Context.Provider
-          value={{
-            open: true,
-            setOpen: () => {},
-            fieldValue: '',
-            setFieldValue: () => {},
-            arrayApi: [],
-            setArrayApi: () => {},
-          }}
-        >
-          <Modal />
-        </Context.Provider>
-      );
-    });
-    const close = screen.getByTestId('modal');
-    expect(close).toBeInTheDocument;
-    userEvent.click(close);
-    expect(close).toBeCalled;
-    expect(close).not.toBeInTheDocument;
   });
 });
 

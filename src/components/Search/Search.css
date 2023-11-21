@@ -19,9 +19,11 @@
   border-radius: 5px;
 }
 
-.search__icon {
+.searchClick {
   width: 25px;
   margin-left: -35px;
+  background: transparent;
+  border: none;
 }
 
 .search__button {
@@ -64,6 +66,15 @@
   .logo {
     top: 10px;
     max-width: 100px;
+  }
+
+  .searchClick {
+    margin-left: -15px;
+  }
+
+  .searchClick img {
+    z-index: 1;
+    position: relative;
   }
 }
 

@@ -1,4 +1,4 @@
-import { IShips as IData } from '../components/Types/index';
+import { IShips as IData } from '../../components/Types/index';
 
 export const dataTestOne: IData[] = [
   {

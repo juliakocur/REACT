@@ -1,136 +1,114 @@
 import { useEffect, useState } from 'react';
-import React from 'react';
 import Cards from '../Cards/Cards';
 import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
-import { Context } from '../../App';
-import { IShips as ShipsCard } from '../Types/index';
 import { Link } from 'react-router-dom';
 import './API.css';
 export const clickName: [] = [];
 
+import { incrementViewMode } from '../../store/reducers/ViewModeValue';
+import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
+import { incrementLoad } from '../../store/reducers/MainLoading';
+
+import { RootState } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useGetStarshipsQuery } from '../../store/reducers/CreateApi';
+
 export const API = () => {
-  const [array, setArray] = useState<ShipsCard[]>([]);
-  const [val, setVal] = useState(false);
   const [currentItems, setCurrentItems] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageItems, setPageItems] = useState(true);
-  const context = React.useContext(Context);
+  const [pages, setPages] = useState('1');
+  const dispatch = useAppDispatch();
+  const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
+  const { data: param, isFetching } = useGetStarshipsQuery(pages);
+  const setLoad = useAppSelector((state: RootState) => state.load.isLoading);
 
   useEffect(() => {
-    async function createCardApi() {
-      setVal(true);
-      const valueLS = localStorage.getItem('Value') ?? '';
-      context?.setFieldValue(valueLS);
-      const contextLS = context?.fieldValue;
-      const URL: string = 'https://swapi.dev/api/starships';
-      const urlHasLS: string = `${URL}/?search=${contextLS}&page=${currentPage}`;
-      const urlPage: string = `${URL}/?page=${currentPage}`;
-      const url = valueLS.length > 0 ? urlHasLS : urlPage;
-      const request = new Headers();
-      const res = await fetch(url, {
-        method: 'GET',
-        headers: request,
-      });
-      const data = await res.json();
-      if (!pageItems) {
-        setArray(data.results.splice(0, 5));
-      } else {
-        setArray(data.results);
-      }
-      setCurrentItems(Math.ceil(data.count / 10));
-      setVal(false);
+    if (param?.count) {
+      setCurrentItems(Math.ceil(param?.count / 10));
+      dispatch(incrementLoad(isFetching));
+      console.log(setLoad);
     }
-    createCardApi();
-  }, [currentPage]);
+  }, [param, isFetching]);
 
-  const cardClick = (name: string) => {
-    localStorage.setItem('Card', name);
+  const shipItems = () => {
+    if (itemsPerPage === 10) {
+      return param?.results.map((el, i) => (
+        <Cards
+          key={i}
+          page={pages}
+          name={el.name}
+          manufacturer={el.manufacturer}
+          passengers={el.passengers}
+          length={el.length}
+          model={el.model}
+          starship_class={el.starship_class}
+          onClick={() => {
+            localStorage.setItem('Card', el.name);
+            dispatch(incrementViewMode(true));
+          }}
+        />
+      ));
+    } else if (itemsPerPage === 5) {
+      return param?.results.slice(0, 5).map((el, i) => (
+        <Cards
+          key={i}
+          page={pages}
+          name={el.name}
+          manufacturer={el.manufacturer}
+          passengers={el.passengers}
+          length={el.length}
+          model={el.model}
+          starship_class={el.starship_class}
+          onClick={() => {
+            localStorage.setItem('Card', el.name);
+            dispatch(incrementViewMode(true));
+          }}
+        />
+      ));
+    }
   };
-
-  async function createCardApi() {
-    setVal(true);
-    const URL: string = 'https://swapi.dev/api/starships';
-    const valueLS = localStorage.getItem('Value') ?? '';
-    context?.setFieldValue(valueLS);
-    const contextLS = context?.fieldValue;
-    const urlHasLS: string = `${URL}/?search=${contextLS}&page=1`;
-    const urlPage: string = `${URL}/?page=1`;
-    const url = valueLS.length > 0 ? urlHasLS : urlPage;
-    const request = new Headers();
-    const res = await fetch(url, {
-      method: 'GET',
-      headers: request,
-    });
-    const data = await res.json();
-    if (pageItems) {
-      setArray(data.results.splice(0, 5));
-    } else {
-      setArray(data.results);
-    }
-    setCurrentItems(Math.ceil(data.count / 10));
-    setVal(false);
-  }
-
-  const shipItems = array.map((el, i) => (
-    <Cards
-      key={i}
-      page={currentPage}
-      name={el.name}
-      manufacturer={el.manufacturer}
-      passengers={el.passengers}
-      length={el.length}
-      model={el.model}
-      starship_class={el.starship_class}
-      onClick={() => {
-        cardClick(el.name);
-        context?.setOpen(true);
-      }}
-    />
-  ));
-
   const changeItemsNumber = () => {
-    pageItems ? setPageItems(false) : setPageItems(true);
-    setCurrentPage(1);
-    createCardApi();
+    itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
+    setPages('1');
   };
+
+  if (isFetching)
+    return (
+      <div className="loader__container">
+        <Loader />
+      </div>
+    );
 
   return (
     <>
-      {val ? (
-        <div className="loader__container">
-          <Loader />
-        </div>
-      ) : array.length > 0 ? (
+      {param?.results[0] ? (
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select active__btn' : 'select'}
+                className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
-                disabled={pageItems ? true : false}
+                disabled={itemsPerPage === 10 ? true : false}
+                data-testid="btn-10"
               >
                 10
               </button>
             </Link>
             <Link to={`/?page=1`}>
               <button
-                className={pageItems ? 'select' : 'select active__btn'}
+                className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
-                disabled={pageItems ? false : true}
+                disabled={itemsPerPage === 10 ? false : true}
+                data-testid="btn-5"
               >
                 5
               </button>
             </Link>
           </div>
-          <div className="cards__container">{shipItems}</div>
-          <Pagination
-            currentPage={currentPage}
-            pageCount={currentItems}
-            setCurrentPage={setCurrentPage}
-          />
+          <div className="cards__container">{shipItems()}</div>
+          <Pagination currentPage={pages} pageCount={currentItems} setPages={setPages} />
         </div>
       ) : (
         <NoResultText />

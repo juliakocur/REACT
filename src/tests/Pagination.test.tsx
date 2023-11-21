@@ -11,7 +11,7 @@ describe('Pagination', () => {
     await act(async () => {
       render(
         <MemoryRouter>
-          <Pagination currentPage={1} pageCount={10} setCurrentPage={() => {}} />
+          <Pagination currentPage={'1'} pageCount={10} setPages={() => {}} />
         </MemoryRouter>
       );
     });
