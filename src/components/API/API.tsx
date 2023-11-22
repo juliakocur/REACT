@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Cards from '../Cards/Cards';
-import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
 import Link from 'next/link';
@@ -9,31 +8,36 @@ export const clickName: [] = [];
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
-import { incrementLoad } from '../../store/reducers/MainLoading';
-
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useGetStarshipsQuery } from '../../store/reducers/CreateApi';
 
-export const API = () => {
+interface IData {
+  name: string;
+  manufacturer: string;
+  passengers: number;
+  length: number;
+  model: string;
+  starship_class: string;
+}
+
+interface IParam {
+  count: number;
+  results: IData[];
+}
+
+export const API = (results: IParam) => {
   const [currentItems, setCurrentItems] = useState(1);
   const [pages, setPages] = useState('1');
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
-  const { data: param, isFetching } = useGetStarshipsQuery(pages);
-  const setLoad = useAppSelector((state: RootState) => state.load.isLoading);
 
   useEffect(() => {
-    if (param?.count) {
-      setCurrentItems(Math.ceil(param?.count / 10));
-      dispatch(incrementLoad(isFetching));
-      console.log(setLoad);
-    }
-  }, [param, isFetching]);
+    setCurrentItems(Math.ceil(results.count / 10));
+  }, []);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {
-      return param?.results.map((el, i) => (
+      return results.results.map((el, i) => (
         <Cards
           key={i}
           page={pages}
@@ -50,7 +54,7 @@ export const API = () => {
         />
       ));
     } else if (itemsPerPage === 5) {
-      return param?.results.slice(0, 5).map((el, i) => (
+      return results.results.slice(0, 5).map((el, i) => (
         <Cards
           key={i}
           page={pages}
@@ -73,16 +77,9 @@ export const API = () => {
     setPages('1');
   };
 
-  if (isFetching)
-    return (
-      <div className="loader__container">
-        <Loader />
-      </div>
-    );
-
   return (
     <>
-      {param?.results[0] ? (
+      {results.results[0] ? (
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>
