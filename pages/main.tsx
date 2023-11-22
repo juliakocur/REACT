@@ -43,9 +43,7 @@ export const getServerSideProps: GetServerSideProps<IUser> = async ({
   console.log(keyword);
   const url: string = 'https://swapi.dev/api/starships';
   const urlHasLS: string = `${url}/?search=${keyword}&page=${page}`;
-  const urlPage: string = `${url}/?page=${page}`;
-  const valueLS = keyword ?? '';
-  const URL: string = valueLS.length > 0 ? urlHasLS : urlPage;
+  const URL: string = urlHasLS;
   const request = new Headers();
   const res = await fetch(URL, {
     method: 'GET',

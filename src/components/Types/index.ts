@@ -21,4 +21,5 @@ export type IPagination = {
   currentPage: string;
   pageCount: number;
   setPages: (page: string) => void;
+  value: string;
 };

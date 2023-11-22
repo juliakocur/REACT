@@ -27,14 +27,14 @@ const Search = () => {
     }
   };
 
-  const saveData = (): void => {
+  const saveData = async () => {
     localStorage.setItem('Value', inputValue);
     console.log(inputValue);
-  };
-
-  const clickCTA = (): void => {
-    dispatch(incrementInput(localStorage.getItem('Value') ?? ''));
-    console.log('close');
+    await Router.push({
+      pathname: process.env.BASE_URL,
+      query: { keyword: localStorage.getItem('Value'), page: 1 },
+    });
+    window.location.href = `/main?keyword=${localStorage.getItem('Value')}&page=1`;
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Search = () => {
           onChange={handleChange}
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
-        <button className="searchClick" data-testid="cta-button" onClick={clickCTA}>
+        <button className="searchClick" data-testid="cta-button">
           <Image src={search} className="search__icon" alt="icon" />
         </button>
       </form>

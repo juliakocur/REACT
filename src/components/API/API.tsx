@@ -28,11 +28,13 @@ interface IParam {
 export const API = (results: IParam) => {
   const [currentItems, setCurrentItems] = useState(1);
   const [pages, setPages] = useState('1');
+  const [val, setVal] = useState('');
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
 
   useEffect(() => {
     setCurrentItems(Math.ceil(results.count / 10));
+    setVal(localStorage.getItem('Value') ?? '');
   }, [results]);
 
   const shipItems = () => {
@@ -83,7 +85,7 @@ export const API = (results: IParam) => {
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>
-            <Link href={`/main?page=1`}>
+            <Link href={`/main?keyword=${val}&page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
@@ -93,7 +95,7 @@ export const API = (results: IParam) => {
                 10
               </button>
             </Link>
-            <Link href={`/main?page=1`}>
+            <Link href={`/main?keyword=${val}&page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
@@ -105,7 +107,12 @@ export const API = (results: IParam) => {
             </Link>
           </div>
           <div className="cards__container">{shipItems()}</div>
-          <Pagination currentPage={pages} pageCount={currentItems} setPages={setPages} />
+          <Pagination
+            currentPage={pages}
+            pageCount={currentItems}
+            setPages={setPages}
+            value={val}
+          />
         </div>
       ) : (
         <NoResultText />
