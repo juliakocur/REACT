@@ -11,6 +11,9 @@ import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
+import Loader from '../Loader/Loader';
+import Router from 'next/router';
+
 interface IData {
   name: string;
   manufacturer: string;
@@ -27,6 +30,7 @@ interface IParam {
 
 export const API = (results: IParam) => {
   const [currentItems, setCurrentItems] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [pages, setPages] = useState('1');
   const [val, setVal] = useState('');
   const dispatch = useAppDispatch();
@@ -36,6 +40,23 @@ export const API = (results: IParam) => {
     setCurrentItems(Math.ceil(results.count / 10));
     setVal(localStorage.getItem('Value') ?? '');
   }, [results]);
+
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {
@@ -78,6 +99,13 @@ export const API = (results: IParam) => {
     itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
     setPages('1');
   };
+  if (loading) {
+    return (
+      <div className="loader__container">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>
