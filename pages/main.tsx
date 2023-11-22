@@ -37,15 +37,14 @@ interface IUser {
   results: IStarship[];
 }
 
-export const getServerSideProps: GetServerSideProps<IUser> = async ({ query: { page = 1 } }) => {
-  let value: string | null = '';
-  if (typeof window !== 'undefined') {
-    value = localStorage.getItem('Value');
-  }
+export const getServerSideProps: GetServerSideProps<IUser> = async ({
+  query: { page = 1, keyword = '' },
+}) => {
+  console.log(keyword);
   const url: string = 'https://swapi.dev/api/starships';
-  const urlHasLS: string = `${url}/?search=${value}&page=${page}`;
+  const urlHasLS: string = `${url}/?search=${keyword}&page=${page}`;
   const urlPage: string = `${url}/?page=${page}`;
-  const valueLS = value ?? '';
+  const valueLS = keyword ?? '';
   const URL: string = valueLS.length > 0 ? urlHasLS : urlPage;
   const request = new Headers();
   const res = await fetch(URL, {

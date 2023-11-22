@@ -33,7 +33,7 @@ export const API = (results: IParam) => {
 
   useEffect(() => {
     setCurrentItems(Math.ceil(results.count / 10));
-  }, []);
+  }, [results]);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {

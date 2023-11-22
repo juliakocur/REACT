@@ -5,6 +5,7 @@ import logo from '../../assets/logo.png';
 import ErrorButton from '../ErrorButton/ErrorButton';
 import Image from 'next/image';
 import './Search.css';
+import Router from 'next/router';
 
 import { incrementInput } from '../../store/reducers/SearchValue';
 import { RootState } from '../../store/store';
@@ -14,9 +15,16 @@ const Search = () => {
   const inputValue = useAppSelector((state: RootState) => state.value.input);
   const dispatch = useAppDispatch();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     dispatch(incrementInput(event.target.value));
-    localStorage.setItem('Value', event.target.value);
+    await localStorage.setItem('Value', event.target.value);
+    if (inputValue) {
+      await Router.push({
+        pathname: process.env.BASE_URL,
+        query: { keyword: localStorage.getItem('Value'), page: 1 },
+      });
+    }
   };
 
   const saveData = (): void => {
