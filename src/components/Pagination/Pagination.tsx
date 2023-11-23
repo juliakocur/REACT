@@ -7,7 +7,7 @@ const Pagination = ({ currentPage, pageCount, setPages, value }: IPagin) => {
   for (let i = 1; i <= pageCount; i += 1) {
     pages.push(`${i}`);
   }
-
+  console.log(currentPage);
   return (
     <div className="pagination__buttons">
       {pages.map((page) => (

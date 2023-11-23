@@ -21,7 +21,6 @@ const Search = () => {
     await localStorage.setItem('Value', event.target.value);
     if (inputValue) {
       await Router.push({
-        pathname: process.env.BASE_URL,
         query: { keyword: localStorage.getItem('Value'), page: 1 },
       });
     }
@@ -31,7 +30,6 @@ const Search = () => {
     localStorage.setItem('Value', inputValue);
     console.log(inputValue);
     await Router.push({
-      pathname: process.env.BASE_URL,
       query: { keyword: localStorage.getItem('Value'), page: 1 },
     });
     window.location.href = `/main?keyword=${localStorage.getItem('Value')}&page=1`;
@@ -43,7 +41,7 @@ const Search = () => {
 
   return (
     <div className="search" data-testid="search">
-      <Image src={logo} className="logo" alt="logo" />
+      <Image src={logo} className="logo" alt="logo" width={200} height={100} />
       <form className="search__form" data-testid="search-form" onSubmit={saveData}>
         <input
           id="name"
@@ -55,8 +53,8 @@ const Search = () => {
           onChange={handleChange}
         />
         <input type="submit" value="" className="search__button" data-testid="click" />
-        <button className="searchClick" data-testid="cta-button">
-          <Image src={search} className="search__icon" alt="icon" />
+        <button className="searchClick" data-testid="cta-button" onClick={saveData}>
+          <Image src={search} className="search__icon" alt="icon" width={30} height={30} />
         </button>
       </form>
       <ErrorButton />

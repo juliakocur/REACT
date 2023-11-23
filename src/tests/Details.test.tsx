@@ -1,7 +1,6 @@
 import { render, act, screen, waitFor } from '@testing-library/react';
 import { dataTest } from './mock/mockData';
 import { dataTestOne } from './mock/mockData';
-import { MemoryRouter } from 'react-router-dom';
 import RightItem from '../components/RightItem/RightItem';
 import Modal from '../components/Modal/Modal';
 import userEvent from '@testing-library/user-event';
@@ -12,11 +11,9 @@ describe('Details', async () => {
   await it('should render Details card', async () => {
     await act(async () => {
       render(
-        <MemoryRouter>
-          <Provider store={setupStore}>
-            <RightItem {...dataTest[0]} />
-          </Provider>
-        </MemoryRouter>
+        <Provider store={setupStore}>
+          <RightItem {...dataTest[0]} />
+        </Provider>
       );
     });
   });
@@ -28,11 +25,9 @@ describe('Modal', () => {
   });
   it('should show loader and close details after click close button', () => {
     const { container } = render(
-      <MemoryRouter>
-        <Provider store={setupStore}>
-          <Modal />
-        </Provider>
-      </MemoryRouter>
+      <Provider store={setupStore}>
+        <Modal />
+      </Provider>
     );
     expect(container.getElementsByClassName('loader')).toBeInTheDocument;
     expect(container.getElementsByClassName('close__button')).toBeInTheDocument;
@@ -59,11 +54,9 @@ describe('Card in modal', () => {
   it('should render card in modal', async () => {
     await act(async () => {
       render(
-        <MemoryRouter>
-          <div className="cards__container" data-testid="details">
-            {cardItem}
-          </div>
-        </MemoryRouter>
+        <div className="cards__container" data-testid="details">
+          {cardItem}
+        </div>
       );
     });
     await waitFor(() => {

@@ -20,7 +20,7 @@ const Modal = () => {
 
   const closeModal = () => {
     dispatch(incrementViewMode(false));
-    window.location.href = 'main?page=1';
+    window.location.href = `main?page=1&keyword=${localStorage.getItem('Value')}`;
   };
 
   const ref = useOutsideClick(() => {

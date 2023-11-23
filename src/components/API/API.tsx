@@ -10,6 +10,7 @@ import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useRouter } from 'next/router';
 
 import Loader from '../Loader/Loader';
 import Router from 'next/router';
@@ -35,10 +36,12 @@ export const API = (results: IParam) => {
   const [val, setVal] = useState('');
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
+  const { query } = useRouter();
 
   useEffect(() => {
     setCurrentItems(Math.ceil(results.count / 10));
     setVal(localStorage.getItem('Value') ?? '');
+    setPages(query.page?.toString() ?? '1');
   }, [results]);
 
   useEffect(() => {
