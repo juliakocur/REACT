@@ -11,23 +11,10 @@ import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { useRouter } from 'next/router';
+import { IParam } from '../Types/index';
 
 import Loader from '../Loader/Loader';
 import Router from 'next/router';
-
-interface IData {
-  name: string;
-  manufacturer: string;
-  passengers: number;
-  length: number;
-  model: string;
-  starship_class: string;
-}
-
-interface IParam {
-  count: number;
-  results: IData[];
-}
 
 export const API = (results: IParam) => {
   const [currentItems, setCurrentItems] = useState(1);

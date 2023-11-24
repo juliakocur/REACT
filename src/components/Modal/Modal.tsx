@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import RightItem from '../RightItem/RightItem';
+import Router from 'next/router';
 
 import Loader from '../Loader/Loader';
 import { useOutsideClick } from '../../useOutsideClick';
 import './Modal.css';
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
-import { incrementLoadDetail } from '../../store/reducers/DetailLoading';
 import { RootState } from '../../store/store';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
-import { useGetStarshipQuery } from '../../store/reducers/CreateApi';
+import { IParam } from '../Types/index';
 
-const Modal = () => {
+const Modal = (results: IParam) => {
   const [item, setItem] = useState('');
+  const [index, setIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const viewMode = useAppSelector((state: RootState) => state.mode.isMode);
-  const { data: param, isFetching } = useGetStarshipQuery(item);
-  const setLoad = useAppSelector((state: RootState) => state.loadDetail.isLoading);
 
   const closeModal = () => {
     dispatch(incrementViewMode(false));
@@ -30,16 +30,36 @@ const Modal = () => {
   useEffect(() => {
     const LS = localStorage.getItem('Card');
     setItem(LS ?? '');
-    if (param?.results) {
-      dispatch(incrementLoadDetail(isFetching));
-      console.log(setLoad);
+    if (results) {
+      for (let i = 0; i < results.results.length; i++) {
+        if (results.results[i].name === item) {
+          setIndex(i);
+        }
+      }
     }
-  }, [viewMode, isFetching]);
+  }, [viewMode, results]);
+
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
 
   if (viewMode) {
     return (
       <>
-        {isFetching ? (
+        {loading ? (
           <div className="modal__wrapper" data-testid="modal">
             <div className="modal__content" ref={ref}>
               <button className="close__button" onClick={closeModal} data-testid="close">
@@ -58,25 +78,22 @@ const Modal = () => {
                 X
               </button>
               <div className="cards__container">
-                {param?.results
-                  .slice(0, 1)
-                  .map((el, i) => (
-                    <RightItem
-                      key={i}
-                      name={el.name}
-                      manufacturer={el.manufacturer}
-                      passengers={el.passengers}
-                      length={el.length}
-                      model={el.model}
-                      starship_class={el.starship_class}
-                    />
-                  ))}
+                {results.results.slice(index, index + 1).map((el, i) => (
+                  <RightItem
+                    key={i}
+                    name={el.name}
+                    manufacturer={el.manufacturer}
+                    passengers={el.passengers}
+                    length={el.length}
+                    model={el.model}
+                    starship_class={el.starship_class}
+                  />
+                ))}
               </div>
             </div>
             <div className="overlay" data-testid="overlay"></div>
           </div>
         )}
-        ;
       </>
     );
   }

@@ -26,7 +26,7 @@ describe('Modal', () => {
   it('should show loader and close details after click close button', () => {
     const { container } = render(
       <Provider store={setupStore}>
-        <Modal />
+        <Modal results={dataTest} count={36} />
       </Provider>
     );
     expect(container.getElementsByClassName('loader')).toBeInTheDocument;

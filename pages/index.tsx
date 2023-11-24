@@ -1,8 +1,14 @@
 import React from 'react';
 import Head from 'next/head';
 import '../styles/global.css';
+import { Provider } from 'react-redux';
+import { setupStore } from '../src/store/store';
 
-const Index = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const Index = ({ children }: Props) => {
   return (
     <>
       <Head>
@@ -10,6 +16,9 @@ const Index = () => {
         <meta name="description" content="React" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Provider store={setupStore}>
+        <div>{children}</div>
+      </Provider>
     </>
   );
 };
