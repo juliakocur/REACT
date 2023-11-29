@@ -1,5 +1,7 @@
+import UncontrolledForm from '../components/UncontrolledForm/UncontrolledForm';
+
 function FormFirst() {
-  return <h1>First</h1>;
+  return <UncontrolledForm />;
 }
 
 export default FormFirst;

@@ -1,0 +1,19 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    width: 350px;
+    min-height: 800px;
+}
+
+.checkbox {
+    display: flex;
+    gap: 10px;
+}
+
+.countries-search,
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 13px;
+}

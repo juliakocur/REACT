@@ -54,6 +54,34 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.user-card img {
+  height: 200px;
+  width: auto;
+}
+
+.user-card {
+  border: 1px solid #1a1a1a;
+  border-radius: 10px;
+  width: 200px;
+  height: 400px;
+  padding: 20px;
+}
+
+.container-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  font-size: 30px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
