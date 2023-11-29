@@ -15,12 +15,7 @@ function Home() {
         {users.slice(-1).map((user) => (
           <>
             <div className="user-card">
-              <img
-                src={
-                  user.photo?.length !== 0 && user.photo ? URL.createObjectURL(user.photo[0]) : ''
-                }
-                alt="photo"
-              />
+              <img src={user.photo} alt="photo" />
               <div key={user.id}>{user.name}</div>
               <p>{user.email}</p>
               <p>{user.gender}</p>

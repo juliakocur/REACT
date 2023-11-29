@@ -15,6 +15,7 @@ function HookForm() {
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
   const [mess, setMess] = React.useState('');
+  const [base64, setBase64] = React.useState('');
 
   function showMessage(callback: (arg: string) => void) {
     callback('CARD CREATED');
@@ -28,7 +29,19 @@ function HookForm() {
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
     showMessage(setMess);
-    dispatch(addUser(data));
+    const newData = {
+      id: data.id,
+      name: data.name,
+      age: data.age,
+      conf: data.conf,
+      country: data.country,
+      email: data.email,
+      password: data.password,
+      confPassword: data.confPassword,
+      gender: data.gender,
+      photo: base64,
+    };
+    dispatch(addUser(newData));
     console.log(countries);
     setTimeout(() => {
       navigate('/');
@@ -75,7 +88,21 @@ function HookForm() {
         </div>
         <div className="input-container">
           <label htmlFor="image">Image :</label>
-          <input id="image" type="file" {...register('photo')} />
+          <input
+            id="image"
+            type="file"
+            {...register('photo')}
+            onChange={(e) => {
+              if (e.target.files === null) return;
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const data = e.target?.result;
+                setBase64(data as string);
+              };
+              reader.readAsDataURL(file);
+            }}
+          />
         </div>
         <div className="checkbox">
           <input id="agreement" type="checkbox" {...register('conf')} />

@@ -24,6 +24,7 @@ function UncontrolledForm() {
   const countries = setCountry.country;
   const [item, setItem] = useState<string[]>([]);
   const [mess, setMess] = React.useState('');
+  const [base64, setBase64] = React.useState('');
 
   function showMessage(callback: (arg: string) => void) {
     callback('CARD CREATED');
@@ -46,7 +47,7 @@ function UncontrolledForm() {
           confPassword: confirmPasswordRef.current?.value,
           gender: genderRef.current?.value,
           conf: acceptRef.current?.checked,
-          photo: pictureRef.current?.files,
+          photo: base64,
           country: countryRef.current?.value,
         })
       );
@@ -124,7 +125,23 @@ function UncontrolledForm() {
         </div>
         <div className="input-container">
           <label htmlFor="image">Image :</label>
-          <input id="image" type="file" name="picture" ref={pictureRef} />
+          <input
+            id="image"
+            type="file"
+            name="picture"
+            ref={pictureRef}
+            onChange={(e) => {
+              if (e.target.files === null) return;
+              const file = e.target.files[0];
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const data = e.target?.result;
+                console.log(data);
+                setBase64(data as string);
+              };
+              reader.readAsDataURL(file);
+            }}
+          />
         </div>
         <div className="checkbox">
           <input id="agreement" type="checkbox" name="agreement" ref={acceptRef} value={item} />

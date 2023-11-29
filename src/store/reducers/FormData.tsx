@@ -7,7 +7,7 @@ export interface FormType {
   email: string | undefined;
   password: string | undefined;
   confPassword: string | undefined;
-  photo: FileList | null | undefined;
+  photo: string | undefined;
   country: string | undefined;
   gender: string | undefined;
   conf: boolean | undefined;
