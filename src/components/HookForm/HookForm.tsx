@@ -55,6 +55,10 @@ function HookForm() {
         </div>
 
         <div className="input-container">
+          <label htmlFor="email">Email :</label>
+          <input id="email" type="text" {...register('email')} />
+        </div>
+        <div className="input-container">
           <label htmlFor="password">Password :</label>
           <input id="password" type="text" {...register('password')} />
         </div>

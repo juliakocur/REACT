@@ -18,6 +18,7 @@ function UncontrolledForm() {
   const acceptRef = useRef<HTMLInputElement>(null);
   const pictureRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
@@ -40,6 +41,7 @@ function UncontrolledForm() {
           id: Math.random().toString(),
           name: nameRef.current.value,
           age: ageRef.current?.value,
+          email: emailRef.current?.value,
           password: passwordRef.current?.value,
           confPassword: confirmPasswordRef.current?.value,
           gender: genderRef.current?.value,
@@ -100,6 +102,10 @@ function UncontrolledForm() {
               </div>
             ))}
           </div>
+        </div>
+        <div className="input-container">
+          <label htmlFor="email">Email :</label>
+          <input id="email" type="text" name="email" ref={emailRef} />
         </div>
         <div className="input-container">
           <label htmlFor="password">Password :</label>

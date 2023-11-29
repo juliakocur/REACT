@@ -4,6 +4,7 @@ export interface FormType {
   id: string;
   name: string | undefined;
   age: string | undefined;
+  email: string | undefined;
   password: string | undefined;
   confPassword: string | undefined;
   photo: FileList | null | undefined;

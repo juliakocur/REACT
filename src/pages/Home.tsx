@@ -22,6 +22,7 @@ function Home() {
                 alt="photo"
               />
               <div key={user.id}>{user.name}</div>
+              <p>{user.email}</p>
               <p>{user.gender}</p>
               <p>{user.age}</p>
               <p>{user.country}</p>
