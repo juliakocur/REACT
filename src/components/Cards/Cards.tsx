@@ -1,4 +1,3 @@
-import './Cards.css';
 import { IShips as StarShips } from '../Types/index';
 import Link from 'next/link';
 

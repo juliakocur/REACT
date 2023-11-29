@@ -4,7 +4,6 @@ import search from '../../assets/search.svg';
 import logo from '../../assets/logo.png';
 import ErrorButton from '../ErrorButton/ErrorButton';
 import Image from 'next/image';
-import './Search.css';
 import Router from 'next/router';
 
 import { incrementInput } from '../../store/reducers/SearchValue';

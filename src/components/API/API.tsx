@@ -3,7 +3,6 @@ import Cards from '../Cards/Cards';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
 import Link from 'next/link';
-import './API.css';
 export const clickName: [] = [];
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';

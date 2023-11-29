@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import '../styles/global.css';
+
 import { Provider } from 'react-redux';
 import { setupStore } from '../src/store/store';
 import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary';

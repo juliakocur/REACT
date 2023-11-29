@@ -1,4 +1,3 @@
-import './Pagination.css';
 import Link from 'next/link';
 import { IPagination as IPagin } from '../Types/index';
 

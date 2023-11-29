@@ -4,7 +4,6 @@ import Router from 'next/router';
 
 import Loader from '../Loader/Loader';
 import { useOutsideClick } from '../../useOutsideClick';
-import './Modal.css';
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 import { RootState } from '../../store/store';
