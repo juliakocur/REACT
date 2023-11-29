@@ -1,39 +1,55 @@
 import { useEffect, useState } from 'react';
 import Cards from '../Cards/Cards';
-import Loader from '../Loader/Loader';
 import Pagination from '../Pagination/Pagination';
 import NoResultText from '../NoResultText/NoResultText';
-import { Link } from 'react-router-dom';
-import './API.css';
+import Link from 'next/link';
 export const clickName: [] = [];
 
 import { incrementViewMode } from '../../store/reducers/ViewModeValue';
 import { incrementPerPage } from '../../store/reducers/ItemsPerPage';
-import { incrementLoad } from '../../store/reducers/MainLoading';
-
 import { RootState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { useGetStarshipsQuery } from '../../store/reducers/CreateApi';
+import { useRouter } from 'next/router';
+import { IParam } from '../Types/index';
 
-export const API = () => {
+import Loader from '../Loader/Loader';
+import Router from 'next/router';
+
+export const API = (results: IParam) => {
   const [currentItems, setCurrentItems] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [pages, setPages] = useState('1');
+  const [val, setVal] = useState('');
   const dispatch = useAppDispatch();
   const itemsPerPage = useAppSelector((state: RootState) => state.items.perPage);
-  const { data: param, isFetching } = useGetStarshipsQuery(pages);
-  const setLoad = useAppSelector((state: RootState) => state.load.isLoading);
+  const { query } = useRouter();
 
   useEffect(() => {
-    if (param?.count) {
-      setCurrentItems(Math.ceil(param?.count / 10));
-      dispatch(incrementLoad(isFetching));
-      console.log(setLoad);
-    }
-  }, [param, isFetching]);
+    setCurrentItems(Math.ceil(results.count / 10));
+    setVal(localStorage.getItem('Value') ?? '');
+    setPages(query.page?.toString() ?? '1');
+  }, [results]);
+
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+    const end = () => {
+      setLoading(false);
+    };
+    Router.events.on('routeChangeStart', start);
+    Router.events.on('routeChangeComplete', end);
+    Router.events.on('routeChangeError', end);
+    return () => {
+      Router.events.off('routeChangeStart', start);
+      Router.events.off('routeChangeComplete', end);
+      Router.events.off('routeChangeError', end);
+    };
+  }, []);
 
   const shipItems = () => {
     if (itemsPerPage === 10) {
-      return param?.results.map((el, i) => (
+      return results.results.map((el, i) => (
         <Cards
           key={i}
           page={pages}
@@ -50,7 +66,7 @@ export const API = () => {
         />
       ));
     } else if (itemsPerPage === 5) {
-      return param?.results.slice(0, 5).map((el, i) => (
+      return results.results.slice(0, 5).map((el, i) => (
         <Cards
           key={i}
           page={pages}
@@ -72,21 +88,21 @@ export const API = () => {
     itemsPerPage === 10 ? dispatch(incrementPerPage(5)) : dispatch(incrementPerPage(10));
     setPages('1');
   };
-
-  if (isFetching)
+  if (loading) {
     return (
       <div className="loader__container">
         <Loader />
       </div>
     );
+  }
 
   return (
     <>
-      {param?.results[0] ? (
+      {results.results[0] ? (
         <div className="cards__list">
           <div className="page__items">
             <span className="page__items__text">Count of items: </span>
-            <Link to={`/?page=1`}>
+            <Link href={`/main?keyword=${val}&page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select active__btn' : 'select'}
                 onClick={changeItemsNumber}
@@ -96,7 +112,7 @@ export const API = () => {
                 10
               </button>
             </Link>
-            <Link to={`/?page=1`}>
+            <Link href={`/main?keyword=${val}&page=1`}>
               <button
                 className={itemsPerPage === 10 ? 'select' : 'select active__btn'}
                 onClick={changeItemsNumber}
@@ -108,7 +124,12 @@ export const API = () => {
             </Link>
           </div>
           <div className="cards__container">{shipItems()}</div>
-          <Pagination currentPage={pages} pageCount={currentItems} setPages={setPages} />
+          <Pagination
+            currentPage={pages}
+            pageCount={currentItems}
+            setPages={setPages}
+            value={val}
+          />
         </div>
       ) : (
         <NoResultText />

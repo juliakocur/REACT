@@ -1,5 +1,4 @@
 import { IShips as StarShips } from '../Types/index';
-import './RightItem.css';
 
 const RightItem = (props: StarShips) => {
   return (

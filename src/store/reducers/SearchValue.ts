@@ -4,7 +4,11 @@ interface UserState {
   input: string;
 }
 
-const value = localStorage.getItem('Value');
+let value: string | null = '';
+if (typeof window !== 'undefined') {
+  value = localStorage.getItem('Value');
+}
+
 const initialState: UserState = {
   input: value ?? '',
 };

@@ -20,11 +20,11 @@
   font-weight: 700;
 }
 
-span {
+.cards__span {
   font-weight: 400;
 }
 
-a {
+.cards__link {
   text-decoration: none;
   color: black;
 }

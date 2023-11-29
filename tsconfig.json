@@ -1,9 +1,16 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "sourceMap": true,
+    "outDir": "dist",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
+    "incremental": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -15,13 +22,30 @@
     "isolatedModules": true,
     "noImplicitAny": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "jsx": "preserve",
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "vite.config.ts",
-    ".eslintrc.cjs",
-    "src"
+    "./src",
+    "./dist/types/**/*.ts",
+    "./next-env.d.ts",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/**/*.ts",
+    "**/**/*.tsx"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": [
+    "./node_modules"
+  ]
 }
