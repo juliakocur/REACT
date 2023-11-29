@@ -11,11 +11,12 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function HookForm() {
-  const { register, handleSubmit } = useForm<FormType>();
+  const { register, handleSubmit, setValue } = useForm<FormType>();
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
   const [mess, setMess] = React.useState('');
   const [base64, setBase64] = React.useState('');
+  const [item, setItem] = React.useState<string[]>([]);
 
   function showMessage(callback: (arg: string) => void) {
     callback('CARD CREATED');
@@ -48,6 +49,21 @@ function HookForm() {
     }, 2000);
   };
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('country', e.target.value);
+    setItem(
+      countries.filter((country) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const fullname = country.toLowerCase();
+        return searchTerm && fullname.startsWith(searchTerm) && fullname !== searchTerm;
+      })
+    );
+  };
+  const onSearch = (searchTerm: string) => {
+    setValue('country', searchTerm);
+    setItem([]);
+  };
+
   return (
     <div className="App">
       <h3>Hook form</h3>
@@ -61,10 +77,23 @@ function HookForm() {
           <label htmlFor="age">Age :</label>
           <input id="age" type="text" {...register('age')} />
         </div>
-
-        <div className="input-container">
-          <label htmlFor="country">Country :</label>
-          <input id="country" type="text" {...register('country')} />
+        <div className="countries-container">
+          <div className="countries-search">
+            <label htmlFor="country">Country :</label>
+            <input
+              id="country"
+              type="text"
+              {...register('country')}
+              onChange={(e) => onChange(e)}
+            />
+          </div>
+          <div className="countries">
+            {item.map((country: string) => (
+              <div className="country" key={country} onClick={() => onSearch(country)}>
+                {country}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="input-container">
