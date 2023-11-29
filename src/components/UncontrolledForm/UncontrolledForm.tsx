@@ -35,7 +35,7 @@ function UncontrolledForm() {
           confPassword: confirmPasswordRef.current?.value,
           gender: genderRef.current?.value,
           conf: acceptRef.current?.checked,
-          photo: pictureRef.current?.files?.[0],
+          photo: pictureRef.current?.files,
           country: countryRef.current?.value,
         })
       );
@@ -81,7 +81,7 @@ function UncontrolledForm() {
           </div>
           <div className="countries">
             {item.map((country) => (
-              <div key={country} onClick={() => onSearch(country)}>
+              <div className="country" key={country} onClick={() => onSearch(country)}>
                 {country}
               </div>
             ))}
@@ -92,7 +92,7 @@ function UncontrolledForm() {
           <input id="password" type="text" name="password" ref={passwordRef} />
         </div>
         <div className="input-container">
-          <label htmlFor="confirmPassword">Password :</label>
+          <label htmlFor="confirmPassword">Confirm password :</label>
           <input id="confirmPassword" type="text" name="confirmPassword" ref={confirmPasswordRef} />
         </div>
         <div className="input-container">

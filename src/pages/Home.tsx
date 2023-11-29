@@ -12,10 +12,15 @@ function Home() {
         <Link to="/second">Form 2</Link>
       </div>
       <div className="container-card">
-        {users.map((user) => (
+        {users.slice(-1).map((user) => (
           <>
             <div className="user-card">
-              <img src={user.photo ? URL.createObjectURL(user.photo) : ''} alt="photo" />
+              <img
+                src={
+                  user.photo?.length !== 0 && user.photo ? URL.createObjectURL(user.photo[0]) : ''
+                }
+                alt="photo"
+              />
               <div key={user.id}>{user.name}</div>
               <p>{user.gender}</p>
               <p>{user.age}</p>

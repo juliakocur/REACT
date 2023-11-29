@@ -1,5 +1,7 @@
+import HookForm from '../components/HookForm/HookForm';
+
 function FormSecond() {
-  return <h1>Second</h1>;
+  return <HookForm />;
 }
 
 export default FormSecond;

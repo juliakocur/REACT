@@ -6,7 +6,7 @@ export interface FormType {
   age: string | undefined;
   password: string | undefined;
   confPassword: string | undefined;
-  photo: undefined | Blob | MediaSource;
+  photo: FileList | null | undefined;
   country: string | undefined;
   gender: string | undefined;
   conf: boolean | undefined;
