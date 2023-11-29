@@ -82,6 +82,16 @@ button:focus-visible {
   font-size: 30px;
 }
 
+.message {
+  color: rgb(10, 221, 10);
+  font: bold;
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  left: 65%;
+  top: 50px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

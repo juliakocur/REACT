@@ -21,3 +21,16 @@
 .country {
   cursor: pointer;
 }
+
+.country:hover {
+  color: gray;
+}
+
+.countries {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  background-color: #80808029;
+  width: 176px;
+  top: 27%;
+}

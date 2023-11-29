@@ -22,9 +22,18 @@ function UncontrolledForm() {
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
   const [item, setItem] = useState<string[]>([]);
+  const [mess, setMess] = React.useState('');
+
+  function showMessage(callback: (arg: string) => void) {
+    callback('CARD CREATED');
+    setTimeout(() => {
+      callback('');
+    }, 3000);
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    showMessage(setMess);
     if (nameRef.current != null) {
       dispatch(
         addUser({
@@ -39,7 +48,9 @@ function UncontrolledForm() {
           country: countryRef.current?.value,
         })
       );
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     }
   };
 
@@ -52,6 +63,8 @@ function UncontrolledForm() {
           return searchTerm && fullname.startsWith(searchTerm) && fullname !== searchTerm;
         })
       );
+    } else {
+      setItem([]);
     }
   };
 
@@ -65,6 +78,7 @@ function UncontrolledForm() {
   return (
     <div className="App">
       <h3>Uncontrolled Component</h3>
+      <div className="message">{mess}</div>
       <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="input-container">
           <label htmlFor="name">Name :</label>

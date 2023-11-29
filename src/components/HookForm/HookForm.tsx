@@ -1,6 +1,7 @@
 import './hookForm.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormType } from '../../store/reducers/FormData';
+import React from 'react';
 
 import { useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/store';
@@ -13,19 +14,31 @@ function HookForm() {
   const { register, handleSubmit } = useForm<FormType>();
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
+  const [mess, setMess] = React.useState('');
+
+  function showMessage(callback: (arg: string) => void) {
+    callback('CARD CREATED');
+    setTimeout(() => {
+      callback('');
+    }, 2000);
+  }
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<FormType> = (data) => {
-    console.log(data);
-    console.log(countries);
+    showMessage(setMess);
     dispatch(addUser(data));
-    navigate('/');
+    console.log(countries);
+    setTimeout(() => {
+      navigate('/');
+    }, 2000);
   };
 
   return (
     <div className="App">
       <h3>Hook form</h3>
+      <div className="message">{mess}</div>
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="input-container">
           <label htmlFor="name">Name :</label>
@@ -60,7 +73,7 @@ function HookForm() {
           <label htmlFor="image">Image :</label>
           <input id="image" type="file" {...register('photo')} />
         </div>
-        <div className="input-container">
+        <div className="checkbox">
           <input id="agreement" type="checkbox" {...register('conf')} />
           <label htmlFor="agreement">I agree to the terms and conditions</label>
         </div>
