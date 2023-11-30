@@ -2,16 +2,52 @@ import './hookForm.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormType } from '../../store/reducers/FormData';
 import React from 'react';
-
 import { useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/store';
-
 import { addUser } from '../../store/reducers/FormData';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .matches(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)
+    .required(),
+  password: yup
+    .string()
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    .required(),
+  confPassword: yup
+    .string()
+    .oneOf([yup.ref('password')])
+    .required(),
+  name: yup
+    .string()
+    .matches(/^[A-Z]/)
+    .max(40)
+    .required(),
+  age: yup.number().positive().integer().required(),
+  gender: yup.string().required(),
+  country: yup.string().required(),
+  conf: yup
+    .string()
+    .matches(/^(true)$/i)
+    .required(),
+  photo: yup.string().required(),
+});
 
 function HookForm() {
-  const { register, handleSubmit, setValue } = useForm<FormType>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const setCountry = useAppSelector((state: RootState) => state);
   const countries = setCountry.country;
   const [mess, setMess] = React.useState('');
@@ -43,14 +79,13 @@ function HookForm() {
       photo: base64,
     };
     dispatch(addUser(newData));
-    console.log(countries);
     setTimeout(() => {
       navigate('/');
     }, 2000);
+    reset();
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue('country', e.target.value);
     setItem(
       countries.filter((country) => {
         const searchTerm = e.target.value.toLowerCase();
@@ -59,6 +94,7 @@ function HookForm() {
       })
     );
   };
+
   const onSearch = (searchTerm: string) => {
     setValue('country', searchTerm);
     setItem([]);
@@ -71,15 +107,18 @@ function HookForm() {
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="input-container">
           <label htmlFor="name">Name :</label>
+          <p className="error-message">{errors.name && 'the first letter must be capitalized'}</p>
           <input id="name" type="text" {...register('name')} />
         </div>
         <div className="input-container">
           <label htmlFor="age">Age :</label>
+          <p className="error-message">{errors.age && 'age must be a positive number'}</p>
           <input id="age" type="text" {...register('age')} />
         </div>
         <div className="countries-container">
           <div className="countries-search">
             <label htmlFor="country">Country :</label>
+            <p className="error-message err-country">{errors.country?.message}</p>
             <input
               id="country"
               type="text"
@@ -87,7 +126,7 @@ function HookForm() {
               onChange={(e) => onChange(e)}
             />
           </div>
-          <div className="countries">
+          <div className="countries hook-countries">
             {item.map((country: string) => (
               <div className="country" key={country} onClick={() => onSearch(country)}>
                 {country}
@@ -95,17 +134,22 @@ function HookForm() {
             ))}
           </div>
         </div>
-
         <div className="input-container">
           <label htmlFor="email">Email :</label>
+          <p className="error-message">{errors.email && 'please, enter an existing email'}</p>
           <input id="email" type="text" {...register('email')} />
         </div>
         <div className="input-container">
           <label htmlFor="password">Password :</label>
+          <p className="error-message">
+            {errors.password &&
+              'password must have: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special characte'}
+          </p>
           <input id="password" type="text" {...register('password')} />
         </div>
         <div className="input-container">
           <label htmlFor="confirmPassword">Confirm password :</label>
+          <p className="error-message">{errors.confPassword && 'password mismatch'}</p>
           <input id="confirmPassword" type="text" {...register('confPassword')} />
         </div>
         <div className="input-container">
@@ -117,6 +161,7 @@ function HookForm() {
         </div>
         <div className="input-container">
           <label htmlFor="image">Image :</label>
+          <p className="error-message">{errors.photo?.message}</p>
           <input
             id="image"
             type="file"
@@ -134,6 +179,7 @@ function HookForm() {
           />
         </div>
         <div className="checkbox">
+          <p className="error-message">{errors.conf && 'please, confirm'}</p>
           <input id="agreement" type="checkbox" {...register('conf')} />
           <label htmlFor="agreement">I agree to the terms and conditions</label>
         </div>

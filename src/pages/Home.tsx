@@ -12,14 +12,14 @@ function Home() {
         <Link to="/second">Form 2</Link>
       </div>
       <div className="container-card">
-        {users.slice(-1).map((user) => (
+        {users.map((user) => (
           <>
             <div className="user-card">
               <img src={user.photo} alt="photo" />
               <div key={user.id}>{user.name}</div>
               <p>{user.email}</p>
               <p>{user.gender}</p>
-              <p>{user.age}</p>
+              <p>{user.age} y.o.</p>
               <p>{user.country}</p>
             </div>
           </>

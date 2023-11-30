@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface FormType {
-  id: string;
+  id?: string;
   name: string | undefined;
-  age: string | undefined;
+  age: number | string | undefined;
   email: string | undefined;
   password: string | undefined;
   confPassword: string | undefined;
   photo: string | undefined;
   country: string | undefined;
   gender: string | undefined;
-  conf: boolean | undefined;
+  conf: string | boolean | undefined;
 }
 
 const initialState = [] as FormType[];
