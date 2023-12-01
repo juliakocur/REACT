@@ -26,13 +26,10 @@ const validationSchema = yup.object().shape({
     .max(40)
     .required(),
   age: yup.number().positive().integer().required(),
-  gender: yup.string().required(),
   country: yup.string().required(),
-  conf: yup
-    .string()
-    .matches(/^(true)$/i)
-    .required(),
+  conf: yup.bool().oneOf([true]).required(),
   photo: yup.string().required(),
+  gender: yup.string().oneOf(['male', 'female']),
 });
 
 function UncontrolledForm() {
@@ -61,7 +58,8 @@ function UncontrolledForm() {
   const [confPassword, setConfPassword] = React.useState('');
   const [name, setName] = React.useState('');
   const [age, setAge] = React.useState('');
-  const [conf, setConf] = React.useState('');
+  const [confirm, setConfirm] = React.useState('');
+  const [genderConf, setGenderConf] = React.useState('');
 
   function showMessage(callback: (arg: string) => void) {
     callback('CARD CREATED');
@@ -74,10 +72,62 @@ function UncontrolledForm() {
     e.preventDefault();
     const name = nameRef.current?.value;
     const age = ageRef.current?.value;
-    if (nameRef.current != null) {
+    const email = emailRef.current?.value;
+    const country = countryRef.current?.value;
+    const password = passwordRef.current?.value;
+    const confPassword = confirmPasswordRef.current?.value;
+    const conf = acceptRef.current?.checked;
+    const photo = pictureRef.current?.value;
+    const gender = genderRef.current?.value;
+    try {
+      await validationSchema.validate(
+        { name, age, email, password, confPassword, conf, photo, country, gender },
+        { abortEarly: false }
+      );
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const errors = error.errors;
+        setErr(errors);
+        console.log(err);
+        for (let i = 0; i < errors.length; i++) {
+          if (errors[i].startsWith('gender')) {
+            setGenderConf('please, select gender');
+          }
+          if (errors[i].startsWith('email')) {
+            setEmail('please, enter an existing email');
+          }
+          if (errors[i].startsWith('password')) {
+            setPassword(
+              'password must have: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special character'
+            );
+          }
+          if (errors[i].startsWith('confPassword')) {
+            setConfPassword('password mismatch');
+          }
+          if (errors[i].startsWith('name')) {
+            setName('the first letter must be capitalized');
+          }
+          if (errors[i].startsWith('age')) {
+            setAge('age must be a positive number');
+          }
+          if (errors[i].startsWith('country')) {
+            setCountryName(errors[i]);
+          }
+          if (errors[i].startsWith('conf must')) {
+            setConfirm('please, confirm');
+          }
+          if (errors[i].startsWith('photo')) {
+            setPhoto(errors[i]);
+          }
+        }
+        setErr([]);
+        return;
+      }
+    }
+    if (err?.length === 0) {
       dispatch(
         addUser({
-          name: nameRef.current.value,
+          name: nameRef.current?.value,
           age: ageRef.current?.value,
           email: emailRef.current?.value,
           password: passwordRef.current?.value,
@@ -88,61 +138,10 @@ function UncontrolledForm() {
           country: countryRef.current?.value,
         })
       );
-      try {
-        await validationSchema.validate(
-          { name, age, email, password, confPassword, conf, photo },
-          { abortEarly: false }
-        );
-      } catch (error) {
-        if (error instanceof yup.ValidationError) {
-          const errors = error.errors;
-          setErr(errors);
-          console.log(err);
-          if (err?.length === 0) {
-            showMessage(setMess);
-            setTimeout(() => {
-              navigate('/');
-            }, 2000);
-            return;
-          }
-          for (let i = 0; i < errors.length; i++) {
-            if (errors[i] === 'email is a required field') {
-              setEmail('please, enter an existing email');
-            }
-            if (errors[i] === 'password is a required field') {
-              setPassword(
-                'password must have: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special characte'
-              );
-            }
-            if (errors[i] === 'confPassword is a required field') {
-              setConfPassword('password mismatch');
-            }
-            if (errors[i] === 'name must match the following: "/^[A-Z]/"') {
-              setName('the first letter must be capitalized');
-            }
-            if (errors[i] === 'name is a required field') {
-              setName('the first letter must be capitalized');
-            }
-            if (
-              errors[i] ===
-              'age must be a `number` type, but the final value was: `NaN` (cast from the value `""`).'
-            ) {
-              setAge('age must be a positive number');
-            }
-            if (errors[i] === 'country is a required field') {
-              setCountryName(errors[i]);
-            }
-            if (errors[i] === 'conf is a required field') {
-              setConf('please, confirm');
-            }
-            if (errors[i] === 'photo is a required field') {
-              setPhoto(errors[i]);
-            }
-          }
-          setErr([]);
-          return;
-        }
-      }
+      showMessage(setMess);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     }
   };
 
@@ -226,7 +225,11 @@ function UncontrolledForm() {
         </div>
         <div className="input-container">
           <label htmlFor="gender">Gender :</label>
-          <select id="gender" ref={genderRef}>
+          <p className="error-message">{genderConf}</p>
+          <select id="gender" ref={genderRef} onChange={() => setGenderConf('')}>
+            <option selected disabled>
+              Choose gender
+            </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
@@ -254,15 +257,8 @@ function UncontrolledForm() {
           />
         </div>
         <div className="checkbox">
-          <p className="error-message">{conf}</p>
-          <input
-            id="agreement"
-            type="checkbox"
-            name="agreement"
-            ref={acceptRef}
-            value={item}
-            onChange={() => setConf('')}
-          />
+          <p className="error-message">{confirm}</p>
+          <input id="agreement" type="checkbox" ref={acceptRef} onChange={() => setConfirm('')} />
           <label htmlFor="agreement">I agree to the terms and conditions</label>
         </div>
         <button type="submit">Submit</button>
