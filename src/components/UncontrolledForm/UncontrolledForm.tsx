@@ -69,6 +69,7 @@ function UncontrolledForm() {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(err);
     e.preventDefault();
     const name = nameRef.current?.value;
     const age = ageRef.current?.value;
@@ -124,7 +125,8 @@ function UncontrolledForm() {
         return;
       }
     }
-    if (err?.length === 0) {
+    if (err?.length === 0 || err === undefined) {
+      console.log(err);
       dispatch(
         addUser({
           name: nameRef.current?.value,

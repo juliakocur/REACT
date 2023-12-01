@@ -29,7 +29,7 @@ const schema = yup.object().shape({
     .max(40)
     .required(),
   age: yup.number().positive().integer().required(),
-  gender: yup.string().required(),
+  gender: yup.string().oneOf(['male', 'female']).required(),
   country: yup.string().required(),
   conf: yup
     .string()
@@ -154,7 +154,11 @@ function HookForm() {
         </div>
         <div className="input-container">
           <label htmlFor="gender">Gender :</label>
+          <p className="error-message">{errors.gender?.message}</p>
           <select id="gender" {...register('gender')}>
+            <option selected disabled>
+              Choose gender
+            </option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
