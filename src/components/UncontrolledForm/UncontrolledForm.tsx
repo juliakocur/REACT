@@ -2,10 +2,38 @@ import './UncontrolledForm.css';
 import React, { useRef, useState } from 'react';
 import { useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/store';
-
 import { addUser } from '../../store/reducers/FormData';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .matches(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/)
+    .required(),
+  password: yup
+    .string()
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    .required(),
+  confPassword: yup
+    .string()
+    .oneOf([yup.ref('password')])
+    .required(),
+  name: yup
+    .string()
+    .matches(/^[A-Z]/)
+    .max(40)
+    .required(),
+  age: yup.number().positive().integer().required(),
+  gender: yup.string().required(),
+  country: yup.string().required(),
+  conf: yup
+    .string()
+    .matches(/^(true)$/i)
+    .required(),
+  photo: yup.string().required(),
+});
 
 function UncontrolledForm() {
   const dispatch = useDispatch();
@@ -24,7 +52,16 @@ function UncontrolledForm() {
   const countries = setCountry.country;
   const [item, setItem] = useState<string[]>([]);
   const [mess, setMess] = React.useState('');
+  const [err, setErr] = React.useState<string[]>();
   const [base64, setBase64] = React.useState('');
+  const [photo, setPhoto] = React.useState('');
+  const [countryName, setCountryName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [confPassword, setConfPassword] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [age, setAge] = React.useState('');
+  const [conf, setConf] = React.useState('');
 
   function showMessage(callback: (arg: string) => void) {
     callback('CARD CREATED');
@@ -33,13 +70,13 @@ function UncontrolledForm() {
     }, 3000);
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    showMessage(setMess);
+    const name = nameRef.current?.value;
+    const age = ageRef.current?.value;
     if (nameRef.current != null) {
       dispatch(
         addUser({
-          id: Math.random().toString(),
           name: nameRef.current.value,
           age: ageRef.current?.value,
           email: emailRef.current?.value,
@@ -51,13 +88,66 @@ function UncontrolledForm() {
           country: countryRef.current?.value,
         })
       );
-      setTimeout(() => {
-        navigate('/');
-      }, 2000);
+      try {
+        await validationSchema.validate(
+          { name, age, email, password, confPassword, conf, photo },
+          { abortEarly: false }
+        );
+      } catch (error) {
+        if (error instanceof yup.ValidationError) {
+          const errors = error.errors;
+          setErr(errors);
+          console.log(err);
+          if (err?.length === 0) {
+            showMessage(setMess);
+            setTimeout(() => {
+              navigate('/');
+            }, 2000);
+            return;
+          }
+          for (let i = 0; i < errors.length; i++) {
+            if (errors[i] === 'email is a required field') {
+              setEmail('please, enter an existing email');
+            }
+            if (errors[i] === 'password is a required field') {
+              setPassword(
+                'password must have: 1 number, 1 uppercased letter, 1 lowercased letter, 1 special characte'
+              );
+            }
+            if (errors[i] === 'confPassword is a required field') {
+              setConfPassword('password mismatch');
+            }
+            if (errors[i] === 'name must match the following: "/^[A-Z]/"') {
+              setName('the first letter must be capitalized');
+            }
+            if (errors[i] === 'name is a required field') {
+              setName('the first letter must be capitalized');
+            }
+            if (
+              errors[i] ===
+              'age must be a `number` type, but the final value was: `NaN` (cast from the value `""`).'
+            ) {
+              setAge('age must be a positive number');
+            }
+            if (errors[i] === 'country is a required field') {
+              setCountryName(errors[i]);
+            }
+            if (errors[i] === 'conf is a required field') {
+              setConf('please, confirm');
+            }
+            if (errors[i] === 'photo is a required field') {
+              setPhoto(errors[i]);
+            }
+          }
+          setErr([]);
+          return;
+        }
+      }
     }
   };
 
   const onChange = () => {
+    setCountryName('');
     if (countryRef.current?.value) {
       setItem(
         countries.filter((country) => {
@@ -85,15 +175,18 @@ function UncontrolledForm() {
       <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="input-container">
           <label htmlFor="name">Name :</label>
-          <input id="name" type="text" name="name" ref={nameRef} />
+          <p className="error-message">{name}</p>
+          <input id="name" type="text" name="name" ref={nameRef} onChange={() => setName('')} />
         </div>
         <div className="input-container">
           <label htmlFor="age">Age :</label>
-          <input id="age" type="text" name="age" ref={ageRef} />
+          <p className="error-message">{age}</p>
+          <input id="age" type="text" name="age" ref={ageRef} onChange={() => setAge('')} />
         </div>
         <div className="countries-container">
           <div className="countries-search">
             <label htmlFor="country">Country :</label>
+            <p className="error-message err-country">{countryName}</p>
             <input id="country" type="text" name="country" ref={countryRef} onChange={onChange} />
           </div>
           <div className="countries">
@@ -106,15 +199,30 @@ function UncontrolledForm() {
         </div>
         <div className="input-container">
           <label htmlFor="email">Email :</label>
-          <input id="email" type="text" name="email" ref={emailRef} />
+          <p className="error-message">{email}</p>
+          <input id="email" type="text" name="email" ref={emailRef} onChange={() => setEmail('')} />
         </div>
         <div className="input-container">
           <label htmlFor="password">Password :</label>
-          <input id="password" type="text" name="password" ref={passwordRef} />
+          <p className="error-message">{password}</p>
+          <input
+            id="password"
+            type="text"
+            name="password"
+            ref={passwordRef}
+            onChange={() => setPassword('')}
+          />
         </div>
         <div className="input-container">
           <label htmlFor="confirmPassword">Confirm password :</label>
-          <input id="confirmPassword" type="text" name="confirmPassword" ref={confirmPasswordRef} />
+          <p className="error-message">{confPassword}</p>
+          <input
+            id="confirmPassword"
+            type="text"
+            name="confirmPassword"
+            ref={confirmPasswordRef}
+            onChange={() => setConfPassword('')}
+          />
         </div>
         <div className="input-container">
           <label htmlFor="gender">Gender :</label>
@@ -125,12 +233,14 @@ function UncontrolledForm() {
         </div>
         <div className="input-container">
           <label htmlFor="image">Image :</label>
+          <p className="error-message">{photo}</p>
           <input
             id="image"
             type="file"
             name="picture"
             ref={pictureRef}
             onChange={(e) => {
+              setPhoto('');
               if (e.target.files === null) return;
               const file = e.target.files[0];
               const reader = new FileReader();
@@ -144,7 +254,15 @@ function UncontrolledForm() {
           />
         </div>
         <div className="checkbox">
-          <input id="agreement" type="checkbox" name="agreement" ref={acceptRef} value={item} />
+          <p className="error-message">{conf}</p>
+          <input
+            id="agreement"
+            type="checkbox"
+            name="agreement"
+            ref={acceptRef}
+            value={item}
+            onChange={() => setConf('')}
+          />
           <label htmlFor="agreement">I agree to the terms and conditions</label>
         </div>
         <button type="submit">Submit</button>

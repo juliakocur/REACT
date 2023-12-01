@@ -81,8 +81,8 @@ function HookForm() {
     dispatch(addUser(newData));
     setTimeout(() => {
       navigate('/');
+      reset();
     }, 2000);
-    reset();
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
