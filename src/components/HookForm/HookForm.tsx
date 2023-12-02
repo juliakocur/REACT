@@ -1,5 +1,5 @@
 import './hookForm.css';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { FormType } from '../../store/reducers/FormData';
 import React from 'react';
 import { useAppSelector } from '../../hooks/redux';
@@ -43,6 +43,7 @@ function HookForm() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
     reset,
   } = useForm({
@@ -119,11 +120,18 @@ function HookForm() {
           <div className="countries-search">
             <label htmlFor="country">Country :</label>
             <p className="error-message err-country">{errors.country?.message}</p>
-            <input
-              id="country"
-              type="text"
-              {...register('country')}
-              onChange={(e) => onChange(e)}
+            <Controller
+              render={({ field }) => (
+                <input
+                  {...register('country')}
+                  onChange={(e) => {
+                    onChange(e);
+                    field.onChange(e);
+                  }}
+                />
+              )}
+              control={control}
+              name="country"
             />
           </div>
           <div className="countries hook-countries">
@@ -187,7 +195,11 @@ function HookForm() {
           <input id="agreement" type="checkbox" {...register('conf')} />
           <label htmlFor="agreement">I agree to the terms and conditions</label>
         </div>
-        <button type="submit" className="submit">
+        <button
+          type="submit"
+          className="submit"
+          disabled={Object.keys(errors).length > 0 ? true : false}
+        >
           Submit
         </button>
       </form>
