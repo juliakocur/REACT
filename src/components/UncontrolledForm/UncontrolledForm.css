@@ -1,0 +1,36 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  width: 350px;
+  min-height: 800px;
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+}
+
+.countries-search,
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.country {
+  cursor: pointer;
+}
+
+.country:hover {
+  color: gray;
+}
+
+.countries {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  background-color: #e7e7e7;
+  width: 176px;
+  top: 70%;
+}

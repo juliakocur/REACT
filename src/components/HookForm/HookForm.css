@@ -1,0 +1,26 @@
+.input-container,
+.countries-container,
+.checkbox {
+  position: relative;
+}
+
+.error-message {
+  position: absolute;
+  color: red;
+  left: 80px;
+  bottom: 25px;
+  line-height: 0.8;
+  font-size: 13px;
+}
+
+.err-country {
+  bottom: 38px;
+}
+
+.hook-countries {
+  top: 65%;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
