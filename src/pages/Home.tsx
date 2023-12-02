@@ -4,7 +4,6 @@ import { useAppSelector } from '../hooks/redux';
 function Home() {
   const users = useAppSelector((state) => state.value);
 
-  console.log(users);
   return (
     <>
       <div className="container">
@@ -21,6 +20,7 @@ function Home() {
               <p>{user.gender}</p>
               <p>{user.age} y.o.</p>
               <p>{user.country}</p>
+              <p>{user.password}</p>
             </div>
           </>
         ))}
